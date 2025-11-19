@@ -1,2 +1,11 @@
 # Ecommerce
-Proyecto de modulo 2 curos python
+Proyecto de modulo 2 curos python 
+
+
+
+
+
+
+
+
+JCaceres
