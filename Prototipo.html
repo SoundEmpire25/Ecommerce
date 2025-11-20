@@ -5,21 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundEmpire - Audio Profesional</title>
     
-    <!-- 1. Tailwind CSS (Estilos) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 2. React y ReactDOM (Motor de la app) -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     
-    <!-- 3. Babel (Para entender el código JSX en el navegador) -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- 4. FontAwesome (Iconos, reemplazando a Lucide para facilitar uso web) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* Ajustes finos que Tailwind a veces necesita en modo CDN */
         body { font-family: sans-serif; }
         .text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
     </style>
@@ -29,10 +24,9 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // Accedemos a React desde la ventana global
         const { useState, useEffect } = React;
 
-        // --- DATOS DE EJEMPLO ---
+        // --- DATOS ---
         const products = [
           {
             id: 1,
@@ -40,7 +34,7 @@
             category: "Micrófonos",
             price: 89990,
             image: "https://images.unsplash.com/photo-1525616451696-5054f1343c3f?auto=format&fit=crop&q=80&w=400",
-            description: "Micrófono legendario para voces, conocido por su resistencia y claridad. Ideal para presentaciones en vivo y estudios de grabación.",
+            description: "Micrófono legendario para voces, conocido por su resistencia y claridad.",
             features: ["Patrón cardioide", "Respuesta de frecuencia: 50Hz - 15kHz", "Incluye estuche y clip"]
           },
           {
@@ -49,7 +43,7 @@
             category: "Consolas",
             price: 349990,
             image: "https://images.unsplash.com/photo-1516280440614-6697288d5d38?auto=format&fit=crop&q=80&w=400",
-            description: "Mesa de mezcla compacta con efectos integrados y conectividad USB. Perfecta para bandas pequeñas y podcasters.",
+            description: "Mesa de mezcla compacta con efectos integrados y conectividad USB.",
             features: ["12 Entradas", "Preamplificadores de bajo ruido", "Compresores de un solo botón"]
           },
           {
@@ -58,7 +52,7 @@
             category: "Parlantes",
             price: 1250000,
             image: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&q=80&w=400",
-            description: "Potencia y claridad en un formato portátil. Ideal para eventos medianos, iglesias y conferencias.",
+            description: "Potencia y claridad en un formato portátil. Ideal para eventos medianos.",
             features: ["1000W de potencia", "Cobertura amplia", "Fácil montaje"]
           },
           {
@@ -67,7 +61,7 @@
             category: "Iluminación",
             price: 450000,
             image: "https://images.unsplash.com/photo-1504701954957-12eb4b680035?auto=format&fit=crop&q=80&w=400",
-            description: "Iluminación profesional de alto impacto. Haz de luz definido y colores vibrantes para espectáculos.",
+            description: "Iluminación profesional de alto impacto. Haz de luz definido.",
             features: ["Lámpara 230W", "Rueda de colores y gobos", "Control DMX"]
           },
           {
@@ -76,7 +70,7 @@
             category: "Accesorios",
             price: 120000,
             image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=400",
-            description: "Aislamiento sonoro superior y respuesta plana para ingenieros de audio y músicos exigentes.",
+            description: "Aislamiento sonoro superior y respuesta plana para ingenieros.",
             features: ["Diseño circumaural", "Drivers de 45mm", "Cable desmontable"]
           },
           {
@@ -85,7 +79,7 @@
             category: "Estudio",
             price: 150000,
             image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&q=80&w=400",
-            description: "Graba con calidad de estudio en casa. Conversores de alta resolución y preamplificadores cristalinos.",
+            description: "Graba con calidad de estudio en casa. Conversores de alta resolución.",
             features: ["24-bit/192kHz", "Entrada de instrumento", "Phantom Power 48V"]
           }
         ];
@@ -95,29 +89,34 @@
         // --- COMPONENTES ---
 
         const Navbar = ({ setPage, mobileMenuOpen, setMobileMenuOpen }) => (
-          <nav className="bg-slate-900 text-white sticky top-0 z-50 shadow-lg border-b border-slate-800">
+          <nav className="bg-slate-900 text-white sticky top-0 z-50 shadow-lg border-b border-slate-800" data-testid="navbar-main">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center">
               <div 
                 className="flex items-center gap-2 font-bold text-2xl tracking-tighter cursor-pointer text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
                 onClick={() => setPage('home')}
+                data-testid="brand-logo"
               >
                 <i className="fas fa-music text-blue-400"></i>
                 SOUNDEMPIRE
               </div>
 
               <div className="hidden md:flex gap-8 font-medium">
-                <button onClick={() => setPage('home')} className="hover:text-blue-400 transition-colors">Inicio</button>
-                <button onClick={() => setPage('catalog')} className="hover:text-blue-400 transition-colors">Productos</button>
-                <button onClick={() => setPage('contact')} className="hover:text-blue-400 transition-colors">Contacto</button>
+                <button onClick={() => setPage('home')} className="hover:text-blue-400 transition-colors" data-testid="nav-item-home">Inicio</button>
+                <button onClick={() => setPage('catalog')} className="hover:text-blue-400 transition-colors" data-testid="nav-item-catalog">Productos</button>
+                <button onClick={() => setPage('contact')} className="hover:text-blue-400 transition-colors" data-testid="nav-item-contact">Contacto</button>
               </div>
 
-              <button className="md:hidden text-2xl" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+              <button 
+                className="md:hidden text-2xl" 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                data-testid="mobile-menu-toggle"
+              >
                 {mobileMenuOpen ? <i className="fas fa-times"></i> : <i className="fas fa-bars"></i>}
               </button>
             </div>
 
             {mobileMenuOpen && (
-              <div className="md:hidden bg-slate-800 border-t border-slate-700 p-4 flex flex-col gap-4">
+              <div className="md:hidden bg-slate-800 border-t border-slate-700 p-4 flex flex-col gap-4" data-testid="mobile-menu-dropdown">
                 <button onClick={() => { setPage('home'); setMobileMenuOpen(false); }} className="text-left py-2 border-b border-slate-700">Inicio</button>
                 <button onClick={() => { setPage('catalog'); setMobileMenuOpen(false); }} className="text-left py-2 border-b border-slate-700">Productos</button>
                 <button onClick={() => { setPage('contact'); setMobileMenuOpen(false); }} className="text-left py-2">Contacto</button>
@@ -127,12 +126,12 @@
         );
 
         const Hero = ({ setPage }) => (
-          <div className="relative bg-slate-900 text-white py-20 overflow-hidden">
+          <div className="relative bg-slate-900 text-white py-20 overflow-hidden" data-testid="hero-section">
             <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-20"></div>
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent"></div>
             
             <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center">
-              <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">
+              <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight" data-testid="hero-title">
                 ELEVA TU <span className="text-blue-500">SONIDO</span>
               </h1>
               <p className="text-xl md:text-2xl text-slate-300 max-w-2xl mb-10">
@@ -141,6 +140,7 @@
               <button 
                 onClick={() => setPage('catalog')}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-lg flex items-center gap-2"
+                data-testid="hero-cta-button"
               >
                 Ver Catálogo <i className="fas fa-chevron-right"></i>
               </button>
@@ -149,7 +149,7 @@
         );
 
         const AboutSection = () => (
-          <section className="py-16 bg-white text-slate-800">
+          <section className="py-16 bg-white text-slate-800" data-testid="about-section">
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mx-auto text-center">
                 <h2 className="text-3xl font-bold mb-8 text-slate-900">¿Quiénes somos?</h2>
@@ -187,18 +187,19 @@
             : products.filter(p => p.category === filter);
 
           return (
-            <div className="bg-slate-50 min-h-screen py-12">
+            <div className="bg-slate-50 min-h-screen py-12" data-testid="catalog-view">
               <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold text-slate-900 mb-8 flex items-center gap-2">
                   <i className="fas fa-shopping-cart text-blue-600"></i> Catálogo de Productos
                 </h2>
 
                 {/* Filtros */}
-                <div className="flex flex-wrap gap-2 mb-10">
+                <div className="flex flex-wrap gap-2 mb-10" data-testid="catalog-filters">
                   {categories.map(cat => (
                     <button
                       key={cat}
                       onClick={() => setFilter(cat)}
+                      data-testid={`filter-btn-${cat.toLowerCase()}`}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                         filter === cat 
                           ? 'bg-slate-900 text-white' 
@@ -211,20 +212,21 @@
                 </div>
 
                 {/* Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="product-grid">
                   {filteredProducts.map(product => (
                     <div 
                       key={product.id} 
                       className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-slate-100 group cursor-pointer"
                       onClick={() => { setSelectedProduct(product); setPage('detail'); }}
+                      data-testid={`product-card-${product.id}`}
                     >
                       <div className="h-64 bg-slate-100 relative overflow-hidden">
-                         <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all"></div>
+                          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all"></div>
                       </div>
                       <div className="p-6">
                         <div className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">{product.category}</div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-2">{product.name}</h3>
+                        <h3 className="text-lg font-bold text-slate-900 mb-2" data-testid="card-title">{product.name}</h3>
                         <p className="text-slate-500 text-sm mb-4 line-clamp-2">{product.description}</p>
                         <div className="flex justify-between items-center">
                           <span className="text-xl font-bold text-slate-900">${product.price.toLocaleString('es-CL')}</span>
@@ -246,11 +248,12 @@
           const whatsappLink = `https://wa.me/56912345678?text=${encodeURIComponent(whatsappMessage)}`;
 
           return (
-            <div className="bg-white min-h-screen py-12">
+            <div className="bg-white min-h-screen py-12" data-testid="product-detail-view">
               <div className="container mx-auto px-4">
                 <button 
                   onClick={() => setPage('catalog')}
                   className="flex items-center gap-2 text-slate-500 hover:text-slate-900 mb-8 transition-colors"
+                  data-testid="back-button"
                 >
                   <i className="fas fa-arrow-left"></i> Volver al Catálogo
                 </button>
@@ -264,8 +267,8 @@
                     <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold tracking-wide w-fit mb-4">
                       {product.category.toUpperCase()}
                     </span>
-                    <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4">{product.name}</h1>
-                    <p className="text-4xl font-light text-slate-900 mb-8">${product.price.toLocaleString('es-CL')}</p>
+                    <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4" data-testid="detail-title">{product.name}</h1>
+                    <p className="text-4xl font-light text-slate-900 mb-8" data-testid="detail-price">${product.price.toLocaleString('es-CL')}</p>
                     
                     <p className="text-slate-600 text-lg mb-8 leading-relaxed">
                       {product.description}
@@ -273,7 +276,7 @@
 
                     <div className="mb-8">
                       <h4 className="font-bold text-slate-900 mb-3">Características:</h4>
-                      <ul className="space-y-2">
+                      <ul className="space-y-2" data-testid="detail-features">
                         {product.features.map((feature, idx) => (
                           <li key={idx} className="flex items-center gap-2 text-slate-600">
                             <div className="w-1.5 h-1.5 bg-blue-500 rounded-full"></div>
@@ -293,6 +296,7 @@
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-3 px-6 rounded-lg font-bold transition-colors shadow-sm"
+                          data-testid="whatsapp-button"
                         >
                           <i className="fab fa-whatsapp text-xl"></i> Comprar por WhatsApp
                         </a>
@@ -309,7 +313,7 @@
         };
 
         const Contact = () => (
-          <div className="bg-slate-50 min-h-screen flex items-center justify-center py-20">
+          <div className="bg-slate-50 min-h-screen flex items-center justify-center py-20" data-testid="contact-view">
             <div className="container mx-auto px-4 max-w-4xl">
               <div className="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
                 <div className="bg-slate-900 text-white p-10 md:w-1/2 flex flex-col justify-between">
@@ -374,7 +378,7 @@
         );
 
         const Footer = () => (
-          <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+          <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800" data-testid="footer">
             <div className="container mx-auto px-4 text-center">
               <div className="flex items-center justify-center gap-2 font-bold text-2xl text-white mb-4">
                 <i className="fas fa-music text-blue-400"></i>
@@ -409,10 +413,15 @@
                     <AboutSection />
                     <div className="bg-slate-50 py-12">
                       <div className="container mx-auto px-4 text-center">
-                         <h2 className="text-3xl font-bold mb-8">Nuevos Ingresos</h2>
-                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                          <h2 className="text-3xl font-bold mb-8">Nuevos Ingresos</h2>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
                            {products.slice(0, 3).map(p => (
-                             <div key={p.id} onClick={() => {setSelectedProduct(p); setPage('detail');}} className="bg-white p-4 rounded-xl shadow-sm cursor-pointer hover:shadow-md transition-all">
+                             <div 
+                                key={p.id} 
+                                onClick={() => {setSelectedProduct(p); setPage('detail');}} 
+                                className="bg-white p-4 rounded-xl shadow-sm cursor-pointer hover:shadow-md transition-all"
+                                data-testid={`featured-product-${p.id}`}
+                             >
                                 <div className="h-32 bg-slate-100 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                                     <img src={p.image} alt={p.name} className="w-full h-full object-cover"/>
                                 </div>
@@ -420,8 +429,14 @@
                                 <p className="text-blue-600 font-bold">${p.price.toLocaleString('es-CL')}</p>
                              </div>
                            ))}
-                         </div>
-                         <button onClick={() => setPage('catalog')} className="mt-8 text-blue-600 font-bold hover:underline">Ver todo el catálogo</button>
+                          </div>
+                          <button 
+                            onClick={() => setPage('catalog')} 
+                            className="mt-8 text-blue-600 font-bold hover:underline"
+                            data-testid="btn-view-all"
+                          >
+                            Ver todo el catálogo
+                          </button>
                       </div>
                     </div>
                   </React.Fragment>
