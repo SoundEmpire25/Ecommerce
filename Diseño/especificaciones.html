@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundEmpire - Dashboard Interactivo</title>
+    
+    <!-- Chosen Palette: Warm Neutral (Light Gray Background, Blue Accent) -->
+    <!-- Application Structure Plan: Designed a single-page app with a fixed sidebar navigation (Inicio, Catálogo, Análisis, Contacto) to meet SPA requirements while reflecting the report's navigation goals. Content sections are dynamically shown/hidden with JS. A new 'Análisis' section was created to fulfill the prompt's data-viz mandate, as the source report contained no data. Product details are shown in a JS modal instead of a new page. This structure prioritizes easy exploration without page reloads. -->
+    <!-- Visualization & Content Choices: Report Info: 'Quiénes somos' text -> Goal: Inform -> Presentation: HTML text block. Report Info: Product list request -> Goal: Organize/Inform -> Presentation: HTML/Tailwind card grid -> Interaction: JS modal on click. Report Info: Contact request -> Goal: Action -> Presentation: HTML links with icons. Prompt Mandate: Data viz -> Goal: Analyze -> Presentation: Chart.js Bar Chart (Canvas) showing mock 'Popularidad de Categoría' data. Icons: Font Awesome (CSS font) used for a professional UI, adhering to NO SVG rule. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 450px;
+        }
+        
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 40;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 50;
+        }
+        .modal-backdrop.active, .modal.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="flex h-screen">
+        <!-- Sidebar de Navegación -->
+        <aside class="w-20 md:w-64 bg-white border-r border-gray-200 flex flex-col">
+            <div class="h-20 flex items-center justify-center border-b border-gray-200">
+                <span class="text-2xl font-bold text-blue-600">
+                    <i class="fa-solid fa-headphones-simple"></i>
+                    <span class="hidden md:inline ml-2">SoundEmpire</span>
+                </span>
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <button onclick="navigate('inicio')" class="nav-link w-full flex items-center gap-4 p-3 rounded-lg text-gray-700 bg-gray-100 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                    <i class="fa-solid fa-house w-6 text-center"></i>
+                    <span class="hidden md:inline font-medium">Inicio</span>
+                </button>
+                <button onclick="navigate('catalogo')" class="nav-link w-full flex items-center gap-4 p-3 rounded-lg text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                    <i class="fa-solid fa-layer-group w-6 text-center"></i>
+                    <span class="hidden md:inline font-medium">Catálogo</span>
+                </button>
+                <button onclick="navigate('analisis')" class="nav-link w-full flex items-center gap-4 p-3 rounded-lg text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                    <i class="fa-solid fa-chart-pie w-6 text-center"></i>
+                    <span class="hidden md:inline font-medium">Análisis</span>
+                </button>
+                <button onclick="navigate('contacto')" class="nav-link w-full flex items-center gap-4 p-3 rounded-lg text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                    <i class="fa-solid fa-phone w-6 text-center"></i>
+                    <span class="hidden md:inline font-medium">Contacto</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Área de Contenido Principal -->
+        <main class="flex-1 flex flex-col overflow-auto">
+            <header class="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8">
+                <h1 id="header-title" class="text-2xl font-semibold text-gray-900">Bienvenido</h1>
+                <div>
+                    <span class="text-sm">Modo: Interactivo</span>
+                </div>
+            </header>
+            
+            <div class="flex-1 p-8 overflow-auto">
+                <!-- Sección Inicio (Quiénes somos) -->
+                <section id="inicio" class="content-section active">
+                    <h2 class="text-3xl font-bold mb-6">¿Quiénes somos?</h2>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 max-w-4xl space-y-6 text-lg text-gray-700 leading-relaxed">
+                        <p>SoundEmpire es una empresa especializada en la venta de equipos de audio profesional, iluminación y soluciones para eventos y producciones.</p>
+                        <p>Nuestro catálogo incluye micrófonos, consolas de audio, parlantes, sistemas de sonido, luces profesionales y accesorios para todo tipo de necesidades técnicas.</p>
+                        <p>Nos enfocamos en ofrecer productos de alta calidad, asesoría especializada y soluciones confiables para estudios de grabación, iglesias, DJs, bandas, sonidistas, empresas de eventos y más.</p>
+                        <p class="font-semibold text-gray-800">Nuestro objetivo es brindar herramientas profesionales que eleven la calidad de cualquier presentación, grabación o espectáculo.</p>
+                    </div>
+                </section>
+
+                <!-- Sección Catálogo -->
+                <section id="catalogo" class="content-section">
+                    <h2 class="text-3xl font-bold mb-6">Catálogo de Productos</h2>
+                    <p class="text-lg text-gray-600 mb-8">Haga clic en un producto para ver más detalles y opciones de contacto.</p>
+                    <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    </div>
+                </section>
+
+                <!-- Sección Análisis (Dashboard) -->
+                <section id="analisis" class="content-section">
+                    <h2 class="text-3xl font-bold mb-6">Análisis de Popularidad</h2>
+                    <p class="text-lg text-gray-600 mb-8">Esta es una visualización de ejemplo que muestra la popularidad de nuestras categorías de productos (datos de demostración).</p>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="chart-container">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Sección Contacto -->
+                <section id="contacto" class="content-section">
+                    <h2 class="text-3xl font-bold mb-6">Contacto Directo</h2>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100 max-w-lg">
+                        <p class="text-lg text-gray-700 mb-8">
+                            Si quieres comprar algún producto o necesitas asesoría, contáctanos directamente a través de:
+                        </p>
+                        <div class="space-y-4">
+                            <a href="https://wa.me/56900000000" target="_blank" class="flex items-center gap-4 p-6 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors font-medium text-lg">
+                                <i class="fa-brands fa-whatsapp fa-2x"></i>
+                                <span>Contactar por WhatsApp</span>
+                            </a>
+                            <a href="https://instagram.com/soundempire" target="_blank" class="flex items-center gap-4 p-6 bg-pink-50 text-pink-700 rounded-lg hover:bg-pink-100 transition-colors font-medium text-lg">
+                                <i class="fa-brands fa-instagram fa-2x"></i>
+                                <span>Ver en Instagram</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Backdrop -->
+    <div id="modal-backdrop" class="modal-backdrop" onclick="closeModal()"></div>
+    
+    <!-- Modal de Detalle de Producto -->
+    <div id="product-modal" class="modal w-11/12 max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="grid md:grid-cols-2">
+            <div class="p-8 bg-gray-100 flex items-center justify-center">
+                <span id="modal-icon" class="text-9xl text-gray-300"></span>
+            </div>
+            <div class="p-8 flex flex-col">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 id="modal-name" class="text-3xl font-bold text-gray-900"></h3>
+                        <p id="modal-category" class="text-lg text-blue-600 font-medium"></p>
+                    </div>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">&times;</button>
+                </div>
+                <p id="modal-description" class="text-gray-700 leading-relaxed mb-6 flex-1"></p>
+                
+                <div class="mb-8">
+                    <span id="modal-price" class="text-4xl font-bold text-gray-900"></span>
+                </div>
+                
+                <p class="text-sm text-gray-500 mb-4">Para comprar, contáctanos directamente (no hay carrito en línea):</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <a id="modal-whatsapp" href="#" target="_blank" class="flex items-center justify-center gap-2 p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-bold transition-colors">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                    <a id="modal-instagram" href="#" target="_blank" class="flex items-center justify-center gap-2 p-3 bg-gray-800 hover:bg-gray-900 text-white rounded-lg font-bold transition-colors">
+                        <i class="fa-brands fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const mockProducts = [
+            { id: 1, name: "Micrófono Dinámico", category: "Micrófonos", price: "$89.990", icon: "🎙️", description: "Micrófono ideal para voces en vivo y podcast. Robusto y con gran claridad." },
+            { id: 2, name: "Consola de Audio 12 Canales", category: "Consolas", price: "$349.990", icon: "🎚️", description: "Consola análoga con efectos integrados y conectividad USB." },
+            { id: 3, name: "Parlante Activo 15\"", category: "Parlantes", price: "$499.990", icon: "🔊", description: "Parlante autoamplificado de 1000W, perfecto para eventos medianos." },
+            { id: 4, name: "Luz PAR LED", category: "Iluminación", price: "$79.990", icon: "💡", description: "Foco de iluminación profesional RGBW para escenarios y decoración." },
+            { id: 5, name: "Audífonos de Estudio", category: "Accesorios", price: "$129.990", icon: "🎧", description: "Audífonos cerrados con respuesta plana para mezcla y monitoreo." },
+            { id: 6, name: "Sistema Inalámbrico", category: "Micrófonos", price: "$299.990", icon: "📡", description: "Sistema de micrófono de mano inalámbrico UHF para total libertad." }
+        ];
+
+        const salesData = {
+            labels: ["Micrófonos", "Consolas", "Parlantes", "Iluminación", "Accesorios"],
+            datasets: [{
+                label: 'Popularidad (Ventas Ficticias)',
+                data: [120, 85, 150, 60, 95],
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2,
+                borderRadius: 8,
+            }]
+        };
+
+        const headerTitles = {
+            inicio: "Bienvenido",
+            catalogo: "Catálogo de Productos",
+            analisis: "Análisis de Popularidad",
+            contacto: "Contacto Directo"
+        };
+        
+        const navLinks = document.querySelectorAll('.nav-link');
+        const contentSections = document.querySelectorAll('.content-section');
+        const headerTitle = document.getElementById('header-title');
+        
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modal = document.getElementById('product-modal');
+
+        function navigate(pageId) {
+            contentSections.forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('bg-gray-100', 'text-gray-700');
+                link.classList.add('text-gray-500');
+            });
+            
+            const activeLink = document.querySelector(`.nav-link[onclick="navigate('${pageId}')"]`);
+            activeLink.classList.add('bg-gray-100', 'text-gray-700');
+            activeLink.classList.remove('text-gray-500');
+            
+            headerTitle.textContent = headerTitles[pageId];
+        }
+
+        function populateCatalog() {
+            const grid = document.getElementById('product-grid');
+            mockProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-blue-200 transition-all cursor-pointer";
+                card.onclick = () => showModal(product);
+                
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-5xl">${product.icon}</span>
+                        <span class="text-xs font-semibold px-3 py-1 bg-blue-50 text-blue-600 rounded-full">${product.category}</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">${product.name}</h3>
+                    <p class="text-gray-600 mb-4">${product.description.substring(0, 50)}...</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-bold text-gray-800">${product.price}</span>
+                        <span class="text-blue-600 font-medium">Ver más &rarr;</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function showModal(product) {
+            document.getElementById('modal-icon').textContent = product.icon;
+            document.getElementById('modal-name').textContent = product.name;
+            document.getElementById('modal-category').textContent = product.category;
+            document.getElementById('modal-description').textContent = product.description;
+            document.getElementById('modal-price').textContent = product.price;
+            
+            const whatsappMsg = `Hola SoundEmpire, estoy interesado en el producto: ${product.name}`;
+            document.getElementById('modal-whatsapp').href = `https://wa.me/56900000000?text=${encodeURIComponent(whatsappMsg)}`;
+            document.getElementById('modal-instagram').href = `https://instagram.com/soundempire`;
+            
+            modalBackdrop.classList.add('active');
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.remove('active');
+            modal.classList.remove('active');
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'bar',
+                data: salesData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#1F2937',
+                            titleColor: '#F9FAFB',
+                            bodyColor: '#F9FAFB',
+                            padding: 12,
+                            cornerRadius: 6,
+                            displayColors: false,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#E5E7EB',
+                                borderDash: [2, 4],
+                            },
+                            ticks: {
+                                color: '#6B7280'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#374151',
+                                font: {
+                                    weight: '600'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        window.onload = () => {
+            navigate('inicio');
+            populateCatalog();
+            initChart();
+        };
+    </script>
+</body>
+</html>
