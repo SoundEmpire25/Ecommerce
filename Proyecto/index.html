@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundEmpire - Audio Profesional</title>
+    
+    <!-- Tailwind CSS (Estilos) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#151e2e',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- CSS Externo -->
+    <link rel="stylesheet" href="ASSETS/CSS/styles.css">
+    <script src="ASSETS/JS/main.js"></script>
+
+</head>
+
+<body class="antialiased selection:bg-blue-600 selection:text-white">
+
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="navegar('home')">
+                    <div class="w-10 h-10 bg-blue-600 rounded flex items-center justify-center">
+                        <i data-lucide="music" class="text-white w-6 h-6"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-wider text-slate-50">SOUND<span class="text-blue-500">EMPIRE</span></span>
+                </div>
+
+                <!-- Menú Escritorio -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <button onclick="navegar('home')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Inicio</button>
+                        <button onclick="navegar('catalogo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Catálogo</button>
+                        <button onclick="navegar('estudio')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Estudio</button>
+                        <button onclick="navegar('vivo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">PA & Vivo</button>
+                    </div>
+                </div>
+
+                <!-- Carrito Botón -->
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleCart(true)" class="relative p-2 text-slate-300 hover:text-blue-400 transition-colors group">
+                        <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+                        <span id="cart-badge" class="hidden absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-blue-600 rounded-full shadow-lg">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL (render via JS) -->
+    <div id="main-content"></div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800 mt-auto py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="font-bold text-xl tracking-wider text-slate-50">SOUND<span class="text-blue-600">EMPIRE</span></span>
+                <p class="text-slate-500 text-sm mt-2">© 2025 SoundEmpire Audio. Todos los derechos reservados.</p>
+            </div>
+            <div class="flex space-x-6 text-slate-400">
+                <div class="flex items-center gap-4 opacity-70 grayscale hover:grayscale-0 transition-all">
+                    <div class="text-xs border border-slate-700 px-2 py-1 rounded flex items-center gap-1">
+                        <div class="w-2 h-2 bg-blue-500 rounded-full"></div> Flow
+                    </div>
+                    <div class="text-xs border border-slate-700 px-2 py-1 rounded flex items-center gap-1">
+                        <div class="w-2 h-2 bg-cyan-400 rounded-full"></div> MercadoPago
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- OVERLAYS, MODALES, ETC -->
+    <!-- (Todo tu HTML tal como está, SIN cambios) -->
+    <!-- ⬇⬇⬇ *PÉGALO COMPLETO IGUAL* ⬇⬇⬇ -->
+
+    <!-- Aquí pega todo tu HTML restante tal como lo enviaste... -->
+    <!-- Carrito, modal de pago, success screen, etc. -->
+
+    <!-- SCRIPT -->
+    <script src="main.js"></script>
+</body>
+</html>
