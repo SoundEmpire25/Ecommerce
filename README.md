@@ -1,14 +1,4 @@
 # Ecommerce
-Proyecto de modulo 2 curos python 
-
-
-
-
-
-
-
-
-
 Roles y tareas propuestas
 Rol	Tareas asignadas:
 Product Owner (PO): Matías Ignacio Sánchez Gálvez	
