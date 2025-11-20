@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Exhibición - Completa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --color-primary: #10B981;
+            --color-secondary: #059669;
+            --color-text: #1F2937;
+            --color-bg: #F9FAFB;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #adminButton { transition: transform 0.3s ease-in-out; }
+        #adminButton:hover { transform: scale(1.05); }
+        #loadingOverlay { transition: opacity 0.5s ease-in-out; }
+        #productFilters { max-width: 1280px; margin-left: auto; margin-right: auto; padding: 1rem 1rem; }
+    </style>
+</head>
+<body class="min-h-screen antialiased" data-app-status="loading">
+
+    <div id="loadingOverlay" data-testid="loading-overlay" class="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-[9999]">
+        <div class="flex flex-col items-center">
+            <svg class="animate-spin h-8 w-8 text-green-600 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span class="text-lg text-gray-700">Cargando experiencia...</span>
+        </div>
+    </div>
+
+    <header class="sticky top-0 z-50 shadow-md bg-white/95 backdrop-blur-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="#home" class="text-2xl font-black text-emerald-600 hover:text-emerald-700 transition duration-150">
+                    ECOMMERCE SIMPLE
+                </a>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-gray-600 hover:text-emerald-600 transition duration-150 font-medium">Inicio</a>
+                    <a href="#products" class="nav-link text-gray-600 hover:text-emerald-600 transition duration-150 font-medium">Productos</a>
+                    <a href="#about" class="nav-link text-gray-600 hover:text-emerald-600 transition duration-150 font-medium">Acerca de Nosotros</a>
+                    <a href="#contact" class="nav-link text-gray-600 hover:text-emerald-600 transition duration-150 font-medium">Contacto</a>
+                </nav>
+                <button id="menuButton" data-testid="mobile-menu-btn" class="md:hidden p-2 text-gray-600 rounded-lg hover:bg-gray-100 transition duration-150">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden absolute w-full bg-white shadow-xl border-t border-gray-100">
+            <nav class="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
+                <a href="#home" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">Inicio</a>
+                <a href="#products" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">Productos</a>
+                <a href="#about" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">Acerca de Nosotros</a>
+                <a href="#contact" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
+        <section id="home" class="page active">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-12">
+                <div class="relative h-64 sm:h-96 bg-emerald-100 flex items-center justify-center p-6" style="background-image: url('https://placehold.co/1200x400/D1FAE5/065F46?text=El+Lugar+para+encontrar+lo+%C3%BAnico'); background-size: cover; background-position: center;">
+                    <div class="text-center bg-black/50 p-6 rounded-xl">
+                        <h1 class="text-4xl sm:text-6xl font-extrabold text-white leading-tight mb-4 shadow-text">Descubre la Colección</h1>
+                        <p class="text-xl text-gray-200">Donde la calidad y el diseño se encuentran.</p>
+                        <a href="#products" class="mt-6 inline-block bg-emerald-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-emerald-600 transition duration-300 transform hover:scale-105">Ver Productos Ahora</a>
+                    </div>
+                </div>
+                <div class="p-8 lg:p-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4 border-b pb-2 border-emerald-100">Nuestra Misión</h2>
+                    <p class="text-gray-600 leading-relaxed">Somos una plataforma dedicada a la curación de artículos únicos y de alta calidad.</p>
+                    <div class="mt-6 flex flex-wrap gap-4">
+                        <div class="flex items-center text-emerald-600"><i data-lucide="shield-check" class="w-5 h-5 mr-2"></i> Calidad Garantizada</div>
+                        <div class="flex items-center text-emerald-600"><i data-lucide="package" class="w-5 h-5 mr-2"></i> Diseños Exclusivos</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="page">
+            <h1 class="text-4xl font-bold text-gray-800 mb-6">Catálogo de Productos</h1>
+            <p class="text-gray-600 mb-8">Explora nuestra selección. Si algo te gusta, haz clic en ver detalles.</p>
+
+            <div id="productFilters" class="mb-6 flex flex-col sm:flex-row gap-4">
+                <select id="categoryFilter" data-testid="category-filter" class="w-full sm:w-auto p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-150">
+                    <option value="all">Todas las Categorías</option>
+                    <option value="hogar">Hogar</option>
+                    <option value="tecnologia">Tecnología</option>
+                    <option value="moda">Moda</option>
+                </select>
+                <input type="text" id="searchFilter" data-testid="search-input" placeholder="Buscar por nombre..." class="w-full sm:w-auto p-3 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500 transition duration-150">
+            </div>
+
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                </div>
+        </section>
+
+        <section id="product-detail" data-testid="modal-detail" class="page fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+            <div id="detailContent" class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 relative transform transition-all duration-300 ease-out scale-95 opacity-0">
+                </div>
+        </section>
+
+        <section id="contact" class="page">
+            <div class="bg-white rounded-xl shadow-lg p-8 lg:p-12 text-center">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Estamos Listos para Ayudarte</h1>
+                <p class="text-xl text-gray-600 mb-8">Si quieres comprar algún producto, contáctanos por:</p>
+
+                <div class="flex justify-center space-x-8">
+                    <a href="https://wa.me/XXXXXXXXXX" target="_blank" class="flex flex-col items-center group" data-testid="contact-whatsapp">
+                        <div class="p-4 bg-green-500 rounded-full text-white shadow-xl group-hover:bg-green-600 group-hover:scale-110 transition duration-300 ease-in-out">
+                            <i data-lucide="message-square-text" class="w-8 h-8"></i>
+                        </div>
+                        <span class="mt-3 text-lg font-medium text-gray-700 group-hover:text-green-600">WhatsApp</span>
+                    </a>
+
+                    <a href="https://instagram.com/tuusuario" target="_blank" class="flex flex-col items-center group" data-testid="contact-instagram">
+                        <div class="p-4 bg-pink-500 rounded-full text-white shadow-xl group-hover:bg-pink-600 group-hover:scale-110 transition duration-300 ease-in-out">
+                            <i data-lucide="instagram" class="w-8 h-8"></i>
+                        </div>
+                        <span class="mt-3 text-lg font-medium text-gray-700 group-hover:text-pink-600">Instagram</span>
+                    </a>
+                </div>
+                <p class="mt-8 text-sm text-gray-500">Reemplaza 'XXXXXXXXXX' y 'tuusuario' con tus datos reales.</p>
+            </div>
+        </section>
+
+        <section id="about" class="page">
+            <div class="bg-white rounded-xl shadow-lg p-8 lg:p-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Acerca de Nosotros</h1>
+                <h2 class="text-2xl font-semibold text-emerald-600 mb-6">Nuestra Historia y Valores</h2>
+                <p class="text-gray-600 mb-6 leading-relaxed">Todo comenzó con la idea de simplificar la búsqueda de productos de alta calidad en un solo lugar.</p>
+            </div>
+        </section>
+
+        <section id="admin" class="page">
+            <div class="bg-white rounded-xl shadow-lg p-8 lg:p-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-6">Panel de Administración</h1>
+                <div id="adminLogin" class="max-w-md mx-auto p-6 bg-gray-50 rounded-lg shadow-inner">
+                    <h2 class="text-2xl font-semibold mb-4 text-center">Acceso de Administrador</h2>
+                    <input type="password" id="adminPassword" data-testid="login-password" placeholder="Contraseña (admin123)" class="w-full p-3 border border-gray-300 rounded-lg mb-4 focus:ring-emerald-500 focus:border-emerald-500">
+                    <button id="loginButton" data-testid="login-submit" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-lg hover:bg-emerald-700 transition duration-300">Ingresar</button>
+                    <p id="loginMessage" data-testid="login-error" class="mt-4 text-center text-red-500 hidden">Contraseña incorrecta.</p>
+                </div>
+                <div id="adminInterface" class="hidden">
+                    <h2 class="text-2xl font-semibold text-emerald-600 mb-6">Gestión de Productos</h2>
+                    <div class="mb-8 p-6 border border-dashed border-emerald-300 rounded-lg bg-emerald-50">
+                        <h3 class="text-xl font-bold mb-4" id="formTitle">Agregar Nuevo Producto</h3>
+                        <input type="hidden" id="productId">
+                        <input type="text" id="productName" placeholder="Nombre" class="w-full p-3 border border-gray-300 rounded-lg mb-3">
+                        <input type="text" id="productCategory" placeholder="Categoría" class="w-full p-3 border border-gray-300 rounded-lg mb-3">
+                        <input type="number" id="productPrice" placeholder="Precio" class="w-full p-3 border border-gray-300 rounded-lg mb-3">
+                        <input type="text" id="productDescription" placeholder="Descripción" class="w-full p-3 border border-gray-300 rounded-lg mb-3">
+                        <input type="text" id="productImage" placeholder="URL Imagen" class="w-full p-3 border border-gray-300 rounded-lg mb-4">
+                        <div class="flex gap-4">
+                            <button id="saveProductButton" class="flex-1 bg-emerald-600 text-white font-bold py-3 rounded-lg hover:bg-emerald-700">Guardar</button>
+                            <button id="resetFormButton" class="bg-gray-400 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-500">Cancelar</button>
+                        </div>
+                    </div>
+                    <div id="productListAdmin" class="space-y-4"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <button id="adminButton" data-testid="admin-fab" class="fixed bottom-6 right-6 p-4 bg-emerald-600 text-white rounded-full shadow-lg hover:bg-emerald-700 z-40" onclick="window.location.hash = '#admin'">
+        <i data-lucide="wrench" class="w-6 h-6"></i>
+    </button>
+
+    <script>
+        lucide.createIcons();
+
+        let products = [
+            { id: 1, name: "Tazón de Cerámica Nórdica", category: "hogar", price: 15.99, description: "Elegante tazón de cerámica con acabado mate, perfecto para tu café.", imageUrl: "https://placehold.co/400x400/10B981/FFFFFF?text=Tazon+Nordico" },
+            { id: 2, name: "Auriculares Inalámbricos Pro", category: "tecnologia", price: 129.50, description: "Audio de alta fidelidad con cancelación de ruido activa.", imageUrl: "https://placehold.co/400x400/065F46/FFFFFF?text=Auriculares+Pro" },
+            { id: 3, name: "Bufanda de Lana Tejida", category: "moda", price: 45.00, description: "Bufanda suave y extra larga, tejida a mano con lana de alpaca.", imageUrl: "https://placehold.co/400x400/99F6E4/065F46?text=Bufanda+Lana" },
+            { id: 4, name: "Lámpara de Escritorio LED", category: "hogar", price: 75.25, description: "Lámpara minimalista con tres modos de luz y brazo flexible.", imageUrl: "https://placehold.co/400x400/D1FAE5/065F46?text=Lampara+LED" },
+        ];
+        let nextProductId = 5;
+
+        function createProductCard(product) {
+            return `
+                <div class="product-card bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 overflow-hidden" 
+                     data-category="${product.category}"
+                     data-testid="product-card-${product.id}">
+                    <div class="relative pt-[100%] overflow-hidden">
+                        <img src="${product.imageUrl}" alt="${product.name}" class="absolute top-0 left-0 w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/400x400/94A3B8/FFFFFF?text=No+Imagen';" loading="lazy">
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800 truncate mb-1" data-testid="product-name">${product.name}</h3>
+                        <p class="text-emerald-600 font-bold text-xl mb-3" data-testid="product-price">$${product.price.toFixed(2)}</p>
+                        <a href="#product-${product.id}" data-testid="view-detail-btn-${product.id}" class="inline-block w-full bg-emerald-500 text-white text-center font-medium py-2 rounded-lg hover:bg-emerald-600 transition duration-300 text-sm">Ver Detalles</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProductGrid() {
+            document.getElementById('productGrid').innerHTML = products.map(createProductCard).join('');
+        }
+
+        // --- DETALLE DEL PRODUCTO CON LINKS RESTAURADOS ---
+        function createProductDetailHtml(product) {
+            return `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div>
+                        <img src="${product.imageUrl}" alt="${product.name}" class="w-full h-auto object-cover rounded-lg shadow-lg border border-gray-200">
+                    </div>
+                    <div>
+                        <span class="inline-block px-3 py-1 text-xs font-semibold uppercase rounded-full bg-emerald-100 text-emerald-600 mb-2">${product.category}</span>
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4" data-testid="detail-title">${product.name}</h2>
+                        <p class="text-5xl font-extrabold text-emerald-600 mb-6">$${product.price.toFixed(2)}</p>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">Descripción Completa</h3>
+                        <p class="text-gray-600 mb-6 leading-relaxed">${product.description}</p>
+
+                        <h3 class="text-xl font-semibold text-gray-700 mb-3">¿Te interesa? Contáctanos:</h3>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <a href="https://wa.me/XXXXXXXXXX?text=Me%20interesa%20el%20producto:%20${encodeURIComponent(product.name)}" target="_blank" class="flex items-center justify-center flex-1 bg-green-500 text-white font-bold py-3 rounded-lg shadow-md hover:bg-green-600 transition duration-300" data-testid="modal-whatsapp">
+                                <i data-lucide="message-square-text" class="w-5 h-5 mr-2"></i> Contactar WhatsApp
+                            </a>
+                            <a href="https://instagram.com/tuusuario" target="_blank" class="flex items-center justify-center flex-1 bg-pink-500 text-white font-bold py-3 rounded-lg shadow-md hover:bg-pink-600 transition duration-300" data-testid="modal-instagram">
+                                <i data-lucide="instagram" class="w-5 h-5 mr-2"></i> Escribir por Instagram
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <button id="closeDetail" class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 transition duration-150" data-testid="close-detail">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            `;
+        }
+
+        function renderProductDetail(product) {
+            const detailContent = document.getElementById('detailContent');
+            detailContent.innerHTML = createProductDetailHtml(product);
+            lucide.createIcons();
+            document.getElementById('closeDetail').addEventListener('click', () => window.location.hash = '#products');
+            document.getElementById('product-detail').classList.remove('hidden');
+            setTimeout(() => detailContent.classList.add('scale-100', 'opacity-100'), 10);
+        }
+
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link');
+        let isAdminLoggedIn = false;
+
+        function navigateTo(pageId) {
+            pages.forEach(page => page.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                if (pageId === 'admin' && isAdminLoggedIn) {
+                    document.getElementById('adminLogin').classList.add('hidden');
+                    document.getElementById('adminInterface').classList.remove('hidden');
+                    renderAdminProductList();
+                }
+                navLinks.forEach(link => {
+                    link.classList.remove('text-emerald-600', 'font-bold', 'bg-emerald-50');
+                    if (link.getAttribute('href') === `#${pageId}`) link.classList.add('text-emerald-600', 'font-bold', 'bg-emerald-50');
+                });
+            } else {
+                navigateTo('home');
+            }
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+
+        function handleHashChange() {
+            const hash = window.location.hash.substring(1) || 'home';
+            if (hash.startsWith('product-')) {
+                const id = parseInt(hash.split('-')[1]);
+                const p = products.find(x => x.id === id);
+                if (p) renderProductDetail(p);
+                else navigateTo('products');
+            } else {
+                document.getElementById('product-detail').classList.add('hidden');
+                document.getElementById('detailContent').classList.remove('scale-100', 'opacity-100');
+                navigateTo(hash);
+            }
+        }
+
+        window.addEventListener('hashchange', handleHashChange);
+        document.getElementById('menuButton').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('hidden'));
+        document.getElementById('loginButton').addEventListener('click', () => {
+            if (document.getElementById('adminPassword').value === 'admin123') {
+                isAdminLoggedIn = true;
+                document.getElementById('adminLogin').classList.add('hidden');
+                document.getElementById('adminInterface').classList.remove('hidden');
+                renderAdminProductList();
+            } else {
+                document.getElementById('loginMessage').classList.remove('hidden');
+            }
+        });
+
+        function renderAdminProductList() {
+            document.getElementById('productListAdmin').innerHTML = products.map(p => `
+                <div class="flex justify-between p-4 bg-white border rounded mb-2" data-testid="admin-row-${p.id}">
+                    <div>${p.name} - $${p.price}</div>
+                    <div><button onclick="deleteProduct(${p.id})" class="text-red-500" data-testid="admin-delete-${p.id}"><i data-lucide="trash-2"></i></button></div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        window.deleteProduct = function(id) {
+            products = products.filter(p => p.id !== id);
+            renderAdminProductList();
+            renderProductGrid();
+        };
+
+        document.getElementById('saveProductButton').addEventListener('click', () => {
+            const name = document.getElementById('productName').value;
+            const cat = document.getElementById('productCategory').value;
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const desc = document.getElementById('productDescription').value;
+            const img = document.getElementById('productImage').value;
+            if (name && price && cat && desc && img) {
+                products.push({id: nextProductId++, name, category: cat, price, description: desc, imageUrl: img});
+                // Reset Form
+                document.getElementById('productName').value = '';
+                document.getElementById('productCategory').value = '';
+                document.getElementById('productPrice').value = '';
+                document.getElementById('productDescription').value = '';
+                document.getElementById('productImage').value = '';
+                renderAdminProductList();
+                renderProductGrid();
+            }
+        });
+        document.getElementById('resetFormButton').addEventListener('click', () => {
+             document.getElementById('productName').value = '';
+             document.getElementById('productCategory').value = '';
+             document.getElementById('productPrice').value = '';
+             document.getElementById('productDescription').value = '';
+             document.getElementById('productImage').value = '';
+        });
+
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('searchFilter').addEventListener('input', applyFilters);
+
+        function applyFilters() {
+            const cat = document.getElementById('categoryFilter').value;
+            const term = document.getElementById('searchFilter').value.toLowerCase();
+            document.querySelectorAll('#productGrid .product-card').forEach(card => {
+                const cCat = card.getAttribute('data-category');
+                const cName = card.querySelector('h3').textContent.toLowerCase();
+                let visible = (cat === 'all' || cCat === cat) && (!term || cName.includes(term));
+                card.style.display = visible ? 'block' : 'none';
+            });
+        }
+
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingOverlay').classList.add('hidden');
+                    document.body.setAttribute('data-app-status', 'loaded');
+                }, 500);
+                handleHashChange();
+                renderProductGrid();
+            }, 800);
+        };
+    </script>
+</body>
+</html>
