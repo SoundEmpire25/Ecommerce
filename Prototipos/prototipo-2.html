@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundEmpire - Audio Profesional</title>
     
+<<<<<<< HEAD
     <!-- Tailwind CSS (Estilos) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -12,14 +13,24 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Configuración Tailwind para colores personalizados si fuera necesario -->
+=======
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
+<<<<<<< HEAD
                         slate: {
                             850: '#151e2e', // Un tono extra para fondos
                         }
+=======
+                        slate: { 850: '#151e2e' }
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -34,6 +45,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
+<<<<<<< HEAD
             background-color: #0f172a; /* slate-900 */
             color: #f8fafc; /* slate-50 */
         }
@@ -48,24 +60,67 @@
         @keyframes slideOutRight { from { transform: translateX(0); } to { transform: translateX(100%); } }
 
         /* Ocultar scrollbar en carrito pero permitir scroll */
+=======
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+
+        /* Animaciones */
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        .slide-in-right { animation: slideInRight 0.3s ease-out forwards; }
+        
+        .animate-fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .is-animating .animate-fade-in-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .is-animating .animate-fade-in-up:nth-child(2) { transition-delay: 0.1s; }
+        .is-animating .animate-fade-in-up:nth-child(3) { transition-delay: 0.2s; }
+        .is-animating .animate-fade-in-up:nth-child(4) { transition-delay: 0.3s; }
+
+        .hero-slide {
+            position: absolute; inset: 0; opacity: 0;
+            transition: opacity 1s ease-in-out; z-index: 0;
+        }
+        .hero-slide.active { opacity: 1; z-index: 10; }
+        .hero-content { position: relative; z-index: 20; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
 <body class="antialiased selection:bg-blue-600 selection:text-white">
 
+<<<<<<< HEAD
     <!-- NAVBAR -->
     <nav class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="navegar('home')">
+=======
+    <nav class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="navegar('home')" data-testid="logo-soundempire">
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                     <div class="w-10 h-10 bg-blue-600 rounded flex items-center justify-center">
                         <i data-lucide="music" class="text-white w-6 h-6"></i>
                     </div>
                     <span class="font-bold text-xl tracking-wider text-slate-50">SOUND<span class="text-blue-500">EMPIRE</span></span>
                 </div>
 
+<<<<<<< HEAD
                 <!-- Menú Escritorio -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
@@ -81,22 +136,42 @@
                     <button onclick="toggleCart(true)" class="relative p-2 text-slate-300 hover:text-blue-400 transition-colors group">
                         <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
                         <span id="cart-badge" class="hidden absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-blue-600 rounded-full shadow-lg">0</span>
+=======
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <button onclick="navegar('home')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" data-testid="nav-home">Inicio</button>
+                        <button onclick="navegar('catalogo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" data-testid="nav-catalogo">Catálogo</button>
+                        <button onclick="navegar('estudio')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" data-testid="nav-estudio">Estudio</button>
+                        <button onclick="navegar('vivo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" data-testid="nav-vivo">PA & Vivo</button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleCart(true)" class="relative p-2 text-slate-300 hover:text-blue-400 transition-colors group" data-testid="btn-open-cart">
+                        <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                     </button>
                 </div>
             </div>
         </div>
     </nav>
 
+<<<<<<< HEAD
     <!-- CONTENEDOR PRINCIPAL (Las vistas se renderizan aquí) -->
     <div id="main-content">
         <!-- El contenido se inyecta vía JS -->
     </div>
 
     <!-- FOOTER -->
+=======
+    <div id="main-content" data-testid="main-content"></div>
+
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
     <footer class="bg-slate-950 border-t border-slate-800 mt-auto py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
                 <span class="font-bold text-xl tracking-wider text-slate-50">SOUND<span class="text-blue-600">EMPIRE</span></span>
+<<<<<<< HEAD
                 <p class="text-slate-500 text-sm mt-2">© 2025 SoundEmpire Audio. Todos los derechos reservados.</p>
             </div>
             <div class="flex space-x-6 text-slate-400">
@@ -108,10 +183,14 @@
                         <div class="w-2 h-2 bg-cyan-400 rounded-full"></div> MercadoPago
                     </div>
                 </div>
+=======
+                <p class="text-slate-500 text-sm mt-2">© 2025 SoundEmpire Audio.</p>
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
             </div>
         </div>
     </footer>
 
+<<<<<<< HEAD
     <!-- OVERLAY CARRITO -->
     <div id="cart-overlay" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCart(false)"></div>
@@ -140,12 +219,33 @@
                     <p class="text-xs text-slate-500 mb-6 text-center">Al continuar, aceptas ser redirigido a una pasarela externa segura.</p>
                     <button onclick="iniciarCheckout()" class="w-full flex justify-center items-center px-6 py-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all hover:scale-[1.02]">
                         Pagar con Flow / MercadoPago
+=======
+    <div id="cart-overlay" class="fixed inset-0 z-50 hidden" data-testid="cart-overlay">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity cursor-pointer" onclick="toggleCart(false)"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex">
+            <div class="w-screen max-w-md bg-slate-900 border-l border-slate-700 shadow-2xl flex flex-col h-full slide-in-right">
+                <div class="px-4 sm:px-6 py-6 flex items-start justify-between border-b border-slate-800">
+                    <h2 class="text-xl font-bold text-white">Carro de Compras</h2>
+                    <button onclick="toggleCart(false)" class="text-slate-400 hover:text-white" data-testid="btn-close-cart">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <div class="flex-1 py-6 overflow-y-auto px-4 sm:px-6 no-scrollbar" id="cart-items-container" data-testid="cart-items-container"></div>
+                <div id="cart-footer" class="border-t border-slate-800 py-6 px-4 sm:px-6 bg-slate-800 hidden">
+                    <div class="flex justify-between text-base font-medium text-white mb-2">
+                        <p>Subtotal</p>
+                        <p id="cart-total" data-testid="cart-total">$0</p>
+                    </div>
+                    <button onclick="iniciarCheckout()" class="w-full flex justify-center items-center px-6 py-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all" data-testid="btn-checkout">
+                        Pagar Ahora
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- MODAL PAGO -->
     <div id="payment-modal" class="fixed inset-0 z-[60] overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -224,10 +324,54 @@
                     <p class="text-slate-400 text-sm max-w-xs mx-auto">Estableciendo conexión segura.</p>
                 </div>
 
+=======
+    <div id="payment-modal" class="fixed inset-0 z-[60] overflow-y-auto hidden" data-testid="payment-modal">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-black/90 transition-opacity" onclick="cerrarModalPago()"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div class="inline-block align-bottom bg-slate-800 rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-700">
+                
+                <div id="payment-content">
+                    <div class="bg-slate-800 px-4 pt-5 pb-4 sm:p-6">
+                        <h3 class="text-lg leading-6 font-bold text-white mb-4">Finalizar Compra</h3>
+                        
+                        <div onclick="seleccionarMetodo('flow')" id="method-flow" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between mb-3 hover:bg-slate-700/30" data-testid="method-flow">
+                            <div class="flex items-center">
+                                <div class="h-10 w-16 bg-white rounded flex items-center justify-center mr-4"><span class="text-blue-900 font-bold italic">flow</span></div>
+                                <span class="font-bold text-white">Flow Pagos</span>
+                            </div>
+                            <div class="check-circle hidden h-5 w-5 bg-blue-500 rounded-full items-center justify-center"><i data-lucide="check" class="w-3 h-3 text-white"></i></div>
+                        </div>
+
+                        <div onclick="seleccionarMetodo('mercadopago')" id="method-mercadopago" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between hover:bg-slate-700/30" data-testid="method-mercadopago">
+                            <div class="flex items-center">
+                                <div class="h-10 w-16 bg-yellow-500 rounded flex items-center justify-center mr-4"><span class="text-slate-900 font-bold text-xs">MP</span></div>
+                                <span class="font-bold text-white">Mercado Pago</span>
+                            </div>
+                            <div class="check-circle hidden h-5 w-5 bg-blue-500 rounded-full items-center justify-center"><i data-lucide="check" class="w-3 h-3 text-white"></i></div>
+                        </div>
+
+                        <div class="mt-6 flex justify-between items-center">
+                            <span class="text-slate-400">Total:</span>
+                            <span class="text-xl font-bold text-white" id="modal-total" data-testid="modal-total">$0</span>
+                        </div>
+                    </div>
+                    <div class="bg-slate-700/30 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-slate-700">
+                        <button type="button" id="btn-pay-now" disabled onclick="procesarPago()" class="w-full inline-flex justify-center rounded-lg border border-transparent px-4 py-2 text-base font-bold text-white bg-slate-600 cursor-not-allowed opacity-50 sm:ml-3 sm:w-auto sm:text-sm transition-all" data-testid="btn-pay-now">Pagar</button>
+                        <button type="button" onclick="cerrarModalPago()" class="mt-3 w-full inline-flex justify-center rounded-lg border border-slate-600 px-4 py-2 bg-transparent text-base font-medium text-slate-300 hover:bg-slate-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" data-testid="btn-cancel-pay">Cancelar</button>
+                    </div>
+                </div>
+
+                <div id="payment-loading" class="hidden p-12 flex-col items-center justify-center text-center">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+                    <p class="text-white font-bold">Procesando...</p>
+                </div>
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
             </div>
         </div>
     </div>
 
+<<<<<<< HEAD
     <!-- PANTALLA ÉXITO -->
     <div id="success-screen" class="fixed inset-0 z-[70] bg-slate-900 hidden items-center justify-center px-4 fade-in">
         <div class="max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-green-500/30 shadow-2xl text-center relative overflow-hidden">
@@ -272,6 +416,46 @@
             window.scrollTo(0, 0);
 
             // Actualizar estilos navbar active
+=======
+    <div id="success-screen" class="fixed inset-0 z-[70] bg-slate-900 hidden items-center justify-center px-4 fade-in" data-testid="success-screen">
+        <div class="max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-green-500/30 shadow-2xl text-center">
+            <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-900/30 mb-6 border-2 border-green-500/50">
+                <i data-lucide="shield-check" class="h-10 w-10 text-green-400"></i>
+            </div>
+            <h2 class="text-3xl font-extrabold text-white mb-2">¡Pago Exitoso!</h2>
+            <p class="text-slate-400 mb-8">Confirmado vía <span id="success-method" class="text-blue-400 font-bold capitalize" data-testid="success-method-name"></span>.</p>
+            <button onclick="resetApp()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg" data-testid="btn-reset-app">Volver a la Tienda</button>
+        </div>
+    </div>
+
+    <script>
+        const PRODUCTOS = [
+            { id: 1, nombre: "Neumann U87 Ai Studio Set", categoria: "Microfonos", grupo: "Estudio", precio: 3290000, imagen: "https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&w=800", descripcion: "Estándar de estudio.", specs: ["Multi-patrón"], stock: 5 },
+            { id: 2, nombre: "Solid State Logic SSL SiX", categoria: "Consolas", grupo: "PA & Vivo", precio: 1850000, imagen: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?auto=format&fit=crop&w=800", descripcion: "Compresión analógica.", specs: ["6 Canales"], stock: 3 },
+            { id: 3, nombre: "Adam Audio A7V (Par)", categoria: "Monitores", grupo: "Estudio", precio: 1450000, imagen: "https://images.unsplash.com/photo-1519508234439-4f23643125c1?auto=format&fit=crop&w=800", descripcion: "Tweeter X-ART.", specs: ["Woofer 7\""], stock: 8 },
+            { id: 4, nombre: "Universal Audio Apollo Twin X", categoria: "Interfaces", grupo: "Estudio", precio: 990000, imagen: "https://images.unsplash.com/photo-1519683109079-d5f539e1542f?auto=format&fit=crop&w=800", descripcion: "Procesamiento UAD.", specs: ["Thunderbolt 3"], stock: 12 },
+            { id: 5, nombre: "Shure SM7B", categoria: "Microfonos", grupo: "Estudio", precio: 450000, imagen: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=800", descripcion: "Vocal legendary.", specs: ["Dinámico"], stock: 20 },
+            { id: 6, nombre: "Moog Sub 37", categoria: "Sintetizadores", grupo: "PA & Vivo", precio: 1950000, imagen: "https://images.unsplash.com/photo-1615234427523-68d6890665e5?auto=format&fit=crop&w=800", descripcion: "Parafónico analógico.", specs: ["37 Teclas"], stock: 2 },
+            { id: 7, nombre: "Sennheiser HD 650", categoria: "Audifonos", grupo: "Estudio", precio: 380000, imagen: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800", descripcion: "Referencia abierta.", specs: ["300 Ohms"], stock: 15 },
+            { id: 8, nombre: "Korg Kronos 2 88", categoria: "Teclados", grupo: "PA & Vivo", precio: 3100000, imagen: "https://images.unsplash.com/photo-1551819261-302d27303187?auto=format&fit=crop&w=800", descripcion: "Workstation.", specs: ["88 Teclas"], stock: 1 }
+        ];
+
+        let cart = [];
+        let currentView = 'home';
+        let selectedMethod = null;
+        let heroInterval = null;
+
+        const formatCLP = (amount) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(amount);
+
+        function navegar(vista, productId = null) {
+            currentView = vista;
+            // FIX: Limpieza estricta del intervalo para evitar loops múltiples
+            if (heroInterval) { clearInterval(heroInterval); heroInterval = null; }
+
+            const container = document.getElementById('main-content');
+            window.scrollTo(0, 0);
+            
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('text-blue-400', 'bg-slate-800');
                 if(btn.innerText.toLowerCase().includes(vista) || (vista === 'home' && btn.innerText === 'Inicio')) {
@@ -279,7 +463,10 @@
                 }
             });
 
+<<<<<<< HEAD
             // Router simple
+=======
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
             if (vista === 'home') renderHome(container);
             else if (vista === 'detalle') renderDetalle(container, productId);
             else renderCatalogo(container, vista);
@@ -288,6 +475,7 @@
         }
 
         function renderHome(container) {
+<<<<<<< HEAD
             container.innerHTML = `
                 <div class="relative bg-slate-900 overflow-hidden mb-12 fade-in">
                     <div class="absolute inset-0">
@@ -310,6 +498,44 @@
                     ${renderTrustSection()}
                 </main>
             `;
+=======
+            const slides = [
+                { img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=2070", title: "Sonido Profesional", desc: "High-End Audio." },
+                { img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=2070", title: "Tu Estudio", desc: "Mejora tu setup." }
+            ];
+
+            const slidesHTML = slides.map((slide, index) => `
+                <div class="hero-slide ${index === 0 ? 'active' : ''}" id="slide-${index}">
+                    <div class="absolute inset-0"><img class="w-full h-full object-cover opacity-40" src="${slide.img}"></div>
+                    <div class="relative max-w-7xl mx-auto py-24 px-4 h-full flex items-center hero-content is-animating">
+                        <div>
+                            <h1 class="text-4xl font-extrabold text-white sm:text-6xl animate-fade-in-up">${slide.title}</h1>
+                            <p class="mt-6 text-xl text-slate-300 animate-fade-in-up">${slide.desc}</p>
+                            <div class="mt-10 animate-fade-in-up"><button onclick="navegar('catalogo')" class="px-8 py-3 rounded-md bg-blue-600 text-white font-medium hover:bg-blue-700">Ver Catálogo</button></div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = `
+                <div class="relative bg-slate-900 overflow-hidden mb-12 h-[500px] fade-in">${slidesHTML}</div>
+                <main class="max-w-7xl mx-auto px-4 py-12">
+                    <h2 class="text-3xl font-bold text-white mb-10" data-testid="section-destacados-title">Destacados del Mes</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" data-testid="product-grid">${PRODUCTOS.slice(0,4).map(p => cardHTML(p)).join('')}</div>
+                </main>
+            `;
+            
+            initSlider(slides.length);
+        }
+
+        function initSlider(total) {
+            let current = 0;
+            heroInterval = setInterval(() => {
+                document.getElementById(`slide-${current}`).classList.remove('active');
+                current = (current + 1) % total;
+                document.getElementById(`slide-${current}`).classList.add('active');
+            }, 5000);
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
         }
 
         function renderCatalogo(container, filtro) {
@@ -319,6 +545,7 @@
             if (filtro === 'vivo') { items = PRODUCTOS.filter(p => p.grupo === 'PA & Vivo'); titulo = "Sonido en Vivo & PA"; }
 
             container.innerHTML = `
+<<<<<<< HEAD
                 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 fade-in">
                     <div class="mb-8 pb-4 border-b border-slate-800">
                         <h2 class="text-3xl font-bold text-white">${titulo}</h2>
@@ -328,12 +555,18 @@
                         ${items.map(p => cardHTML(p)).join('')}
                     </div>
                     ${filtro === 'catalogo' ? renderTrustSection() : ''}
+=======
+                <main class="max-w-7xl mx-auto px-4 py-12 fade-in">
+                    <div class="mb-8 pb-4 border-b border-slate-800"><h2 class="text-3xl font-bold text-white">${titulo}</h2></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" data-testid="product-grid-${filtro}">${items.map(p => cardHTML(p)).join('')}</div>
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                 </main>
             `;
         }
 
         function renderDetalle(container, id) {
             const p = PRODUCTOS.find(x => x.id === id);
+<<<<<<< HEAD
             if (!p) return;
             
             const specsHTML = p.specs.map(s => `<li class="flex items-start"><div class="flex-shrink-0 h-5 w-5 flex items-center justify-center rounded-full bg-slate-800 border border-slate-600 mr-3"><div class="h-1.5 w-1.5 rounded-full bg-blue-500"></div></div>${s}</li>`).join('');
@@ -366,6 +599,19 @@
                                 <button onclick="addToCart(${p.id})" class="w-full bg-blue-600 rounded-lg py-4 flex items-center justify-center text-white font-medium hover:bg-blue-700 transition-all hover:scale-[1.02] shadow-lg shadow-blue-900/50">
                                     <i data-lucide="shopping-cart" class="w-5 h-5 mr-2"></i> Agregar al Carro
                                 </button>
+=======
+            container.innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 py-12 fade-in" data-testid="product-detail-view">
+                    <button onclick="navegar('catalogo')" class="flex items-center text-slate-400 mb-8" data-testid="btn-back-to-catalogo"><i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> Volver</button>
+                    <div class="lg:grid lg:grid-cols-2 lg:gap-12">
+                        <div class="bg-slate-800 rounded-2xl overflow-hidden mb-8"><img src="${p.imagen}" class="w-full h-full object-cover"></div>
+                        <div>
+                            <h1 class="text-3xl font-bold text-white mb-4" data-testid="detail-name">${p.nombre}</h1>
+                            <p class="text-lg text-slate-300 mb-8">${p.descripcion}</p>
+                            <div class="bg-slate-800 p-6 rounded-xl">
+                                <p class="text-3xl font-bold text-white mb-6">${formatCLP(p.precio)}</p>
+                                <button onclick="addToCart(${p.id})" class="w-full bg-blue-600 py-4 rounded-lg text-white font-bold hover:bg-blue-700" data-testid="btn-add-to-cart-detail-${p.id}">Agregar al Carro</button>
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                             </div>
                         </div>
                     </div>
@@ -373,6 +619,7 @@
             `;
         }
 
+<<<<<<< HEAD
         function renderTrustSection() {
             return `
                 <div class="mt-24 grid grid-cols-1 gap-8 sm:grid-cols-3">
@@ -396,18 +643,39 @@
                         <div class="flex items-end justify-between pt-4 border-t border-slate-700/50 mt-auto">
                             <div><span class="text-xs text-slate-500 block">Precio</span><span class="text-xl font-bold text-blue-400">${formatCLP(p.precio)}</span></div>
                             <button onclick="addToCart(${p.id})" class="rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-600 transition-all"><i data-lucide="shopping-cart" class="w-4 h-4 inline mr-1"></i> Agregar</button>
+=======
+        function cardHTML(p) {
+            return `
+                <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all flex flex-col" data-testid="product-card-${p.id}">
+                    <div class="h-64 bg-slate-900 relative cursor-pointer" onclick="navegar('detalle', ${p.id})">
+                        <img src="${p.imagen}" class="w-full h-full object-cover hover:scale-110 transition-transform">
+                        <div class="absolute top-2 right-2 bg-slate-900/90 px-2 py-1 rounded text-xs text-blue-400 border border-slate-700">${p.categoria}</div>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="text-lg font-bold text-white truncate cursor-pointer" onclick="navegar('detalle', ${p.id})" data-testid="product-detail-link-${p.id}">${p.nombre}</h3>
+                        <div class="mt-auto pt-4 flex justify-between items-center">
+                            <span class="text-lg font-bold text-blue-400">${formatCLP(p.precio)}</span>
+                            <button onclick="addToCart(${p.id})" class="bg-slate-700 px-3 py-2 rounded text-sm text-white hover:bg-blue-600" data-testid="btn-add-to-cart-${p.id}">Agregar</button>
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                         </div>
                     </div>
                 </div>
             `;
         }
 
+<<<<<<< HEAD
         // --- LÓGICA CARRITO ---
         function addToCart(id) {
             const prod = PRODUCTOS.find(p => p.id === id);
             const item = cart.find(i => i.id === id);
             if (item) item.qty++;
             else cart.push({ ...prod, qty: 1 });
+=======
+        function addToCart(id) {
+            const prod = PRODUCTOS.find(p => p.id === id);
+            const item = cart.find(i => i.id === id);
+            if (item) item.qty++; else cart.push({ ...prod, qty: 1 });
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
             updateCartUI();
             toggleCart(true);
         }
@@ -430,16 +698,36 @@
             const count = cart.reduce((a, b) => a + b.qty, 0);
             const total = cart.reduce((a, b) => a + (b.precio * b.qty), 0);
             
+<<<<<<< HEAD
             // Badge Navbar
             const badge = document.getElementById('cart-badge');
             badge.innerText = count;
             badge.classList.toggle('hidden', count === 0);
 
             // Items Lista
+=======
+            let badge = document.getElementById('cart-badge');
+            const btnContainer = document.querySelector('[data-testid="btn-open-cart"]');
+
+            if (count > 0) {
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.id = 'cart-badge';
+                    badge.setAttribute('data-testid', 'cart-badge');
+                    badge.className = 'absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-blue-600 rounded-full shadow-lg fade-in';
+                    btnContainer.appendChild(badge);
+                }
+                badge.innerText = count;
+            } else {
+                if (badge) badge.remove();
+            }
+
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
             const container = document.getElementById('cart-items-container');
             const footer = document.getElementById('cart-footer');
             
             if (cart.length === 0) {
+<<<<<<< HEAD
                 container.innerHTML = `<div class="text-center py-12 text-slate-500"><i data-lucide="shopping-cart" class="w-12 h-12 mx-auto mb-4 opacity-50"></i><p>Tu carro está vacío</p></div>`;
                 footer.classList.add('hidden');
             } else {
@@ -455,11 +743,31 @@
                                     <button onclick="updateQty(${item.id}, 1)" class="p-1 hover:text-blue-400"><i data-lucide="plus" class="w-3 h-3"></i></button>
                                 </div>
                                 <button onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-300 flex items-center"><i data-lucide="trash-2" class="w-3 h-3 mr-1"></i> Eliminar</button>
+=======
+                container.innerHTML = `<div class="text-center py-12 text-slate-500" data-testid="cart-empty-message"><i data-lucide="shopping-cart" class="w-12 h-12 mx-auto mb-4 opacity-50"></i><p>Carro vacío</p></div>`;
+                footer.classList.add('hidden');
+            } else {
+                container.innerHTML = `<ul class="divide-y divide-slate-700">` + cart.map(item => `
+                    <li class="py-4 flex" data-testid="cart-item-${item.id}">
+                        <img src="${item.imagen}" class="h-16 w-16 rounded border border-slate-700 object-cover">
+                        <div class="ml-4 flex-1">
+                            <div class="flex justify-between text-white"><h3>${item.nombre}</h3><p class="text-blue-400">${formatCLP(item.precio * item.qty)}</p></div>
+                            <div class="flex justify-between items-center mt-2">
+                                <div class="flex items-center border border-slate-700 rounded bg-slate-800 text-sm">
+                                    <button onclick="updateQty(${item.id}, -1)" class="p-1 px-2 hover:text-blue-400" data-testid="cart-qty-minus-${item.id}">-</button>
+                                    <span class="px-2 text-white" data-testid="cart-item-qty-${item.id}">${item.qty}</span>
+                                    <button onclick="updateQty(${item.id}, 1)" class="p-1 px-2 hover:text-blue-400" data-testid="cart-qty-plus-${item.id}">+</button>
+                                </div>
+                                <button onclick="removeFromCart(${item.id})" class="text-red-400 text-xs hover:text-red-300" data-testid="cart-remove-${item.id}">Eliminar</button>
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                             </div>
                         </div>
                     </li>
                 `).join('') + `</ul>`;
+<<<<<<< HEAD
                 
+=======
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
                 document.getElementById('cart-total').innerText = formatCLP(total);
                 footer.classList.remove('hidden');
             }
@@ -472,6 +780,7 @@
             else overlay.classList.add('hidden');
         }
 
+<<<<<<< HEAD
         // --- LÓGICA PAGO ---
         function iniciarCheckout() {
             toggleCart(false);
@@ -489,11 +798,29 @@
             document.getElementById('btn-pay-now').classList.remove('bg-blue-600', 'hover:bg-blue-700');
             document.getElementById('btn-pay-now').classList.add('bg-slate-600', 'cursor-not-allowed', 'opacity-50');
             selectedMethod = null;
+=======
+        function iniciarCheckout() {
+            toggleCart(false);
+            document.getElementById('modal-total').innerText = formatCLP(cart.reduce((a,b)=>a+(b.precio*b.qty),0));
+            document.getElementById('payment-modal').classList.remove('hidden');
+            document.getElementById('payment-content').classList.remove('hidden');
+            document.getElementById('payment-loading').classList.add('hidden');
+            document.getElementById('payment-loading').classList.remove('flex');
+            document.getElementById('btn-pay-now').disabled = true;
+            document.getElementById('btn-pay-now').classList.add('opacity-50', 'cursor-not-allowed');
+            selectedMethod = null;
+            // Reset selección visual
+            document.querySelectorAll('.payment-option').forEach(el => {
+                 el.classList.remove('border-blue-500', 'bg-blue-900/20');
+                 el.querySelector('.check-circle').classList.add('hidden');
+            });
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
         }
 
         function seleccionarMetodo(metodo) {
             selectedMethod = metodo;
             document.querySelectorAll('.payment-option').forEach(el => {
+<<<<<<< HEAD
                 el.classList.remove('border-blue-500', 'bg-blue-900/20', 'ring-1', 'ring-blue-500');
                 el.querySelector('.check-circle').classList.add('hidden');
             });
@@ -511,10 +838,26 @@
         function cerrarModalPago() {
             document.getElementById('payment-modal').classList.add('hidden');
         }
+=======
+                el.classList.remove('border-blue-500', 'bg-blue-900/20');
+                el.querySelector('.check-circle').classList.add('hidden');
+            });
+            const active = document.getElementById(`method-${metodo}`);
+            active.classList.add('border-blue-500', 'bg-blue-900/20');
+            active.querySelector('.check-circle').classList.remove('hidden');
+            const btn = document.getElementById('btn-pay-now');
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+        }
+
+        function cerrarModalPago() { document.getElementById('payment-modal').classList.add('hidden'); }
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20
 
         function procesarPago() {
             if (!selectedMethod) return;
             document.getElementById('payment-content').classList.add('hidden');
+<<<<<<< HEAD
             document.getElementById('payment-loading').classList.remove('hidden');
             document.getElementById('payment-loading').classList.add('flex');
 
@@ -539,3 +882,32 @@
     </script>
 </body>
 </html>
+=======
+            const loading = document.getElementById('payment-loading');
+            loading.classList.remove('hidden');
+            loading.classList.add('flex');
+
+            // FIX: Timeout reducido a 1.5s para evitar timeouts en tests E2E
+            setTimeout(() => {
+                document.getElementById('payment-modal').classList.add('hidden');
+                document.getElementById('success-method').innerText = selectedMethod === 'mercadopago' ? 'Mercado Pago' : 'Flow Pagos';
+                const success = document.getElementById('success-screen');
+                success.classList.remove('hidden');
+                success.classList.add('flex');
+                cart = [];
+                updateCartUI();
+            }, 1500);
+        }
+
+        function resetApp() {
+            const success = document.getElementById('success-screen');
+            success.classList.add('hidden');
+            success.classList.remove('flex'); // Importante para asegurar que se oculte completamente
+            navegar('home');
+        }
+
+        window.onload = () => navegar('home');
+    </script>
+</body>
+</html>
+>>>>>>> 85516345f1c1191bf585733f6b479ca33fe33e20

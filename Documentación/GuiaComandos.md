@@ -103,9 +103,23 @@ En la terminal Gitbash escribir:
 
 git push origin Rol/Nombre
 ---------------------------------------------------------------------------------------------
+Paso 6: Actualizar tu rama con los cambios remotos
+Si estas en la rama "main"
+
+EScribir en la terminal el siguiente comando:
+
+git pull origin main
+
+Esto hace dos cosas:
+
+Descarga los cambios, es importante tener tu codigo local actualizado antes de realizar cambios.
+
+Los fusiona con tu código local.
+---------------------------------------------------------------------------------------------
 Nota importante:
 
 Navegar entre carpetas: Si te encuentras fuera de la carpeta principal del proyecto, navega hacia ella usando el comando:
 
 cd nombre-de-la-carpeta
+
 
