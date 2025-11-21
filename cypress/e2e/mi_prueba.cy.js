@@ -1,89 +1,105 @@
-describe('Pruebas de Flujo Principal | SoundEmpire QA', () => {
-  
-  // Usamos el 'beforeEach' para visitar la página antes de cada prueba.
-  // IMPORTANTE: Servidor debe estar activo en el puerto 5500 (Live Server)
-  beforeEach(() => {
-    cy.visit('http://localhost:5500/Prototipo.html'); 
-  });
+/// <reference types="cypress" />
 
-  // --- Caso de Prueba 1: Carga y elementos clave ---
-  it('1. Debe cargar la página de inicio y mostrar el llamado a la acción (CTA)', () => {
-    // 1. Verificamos que la sección principal esté visible
-    cy.get('[data-testid="hero-section"]').should('be.visible');
+describe('E2E QA Suite for SoundEmpire (Versión Premium)', () => {
     
-    // 2. Verificamos el título principal
-    cy.get('[data-testid="hero-title"]').should('contain', 'ELEVA TU SONIDO');
-    
-    // 3. Verificamos que el botón principal exista y esté habilitado
-    cy.get('[data-testid="hero-cta-button"]').should('be.visible').and('not.be.disabled');
-  });
-  
-  // --- Caso de Prueba 2: Navegación al Catálogo ---
-  it('2. Debe navegar al Catálogo desde el botón principal', () => {
-    // 1. Clic en el botón CTA usando el selector data-testid
-    cy.get('[data-testid="hero-cta-button"]').click();
-    
-    // 2. Verificamos que la vista del catálogo se cargue
-    cy.get('[data-testid="catalog-view"]').should('be.visible');
-    
-    // 3. Verificamos que los filtros existan (prueba de estabilidad)
-    cy.get('[data-testid="catalog-filters"]').should('be.visible');
-    
-    // 4. Verificamos que al menos un producto se cargue (ejemplo: producto ID 1)
-    cy.get('[data-testid="product-card-1"]').should('exist');
-  });
-  
-  // --- Caso de Prueba 3: Filtrado de Productos ---
-  it('3. Debe filtrar productos correctamente por la categoría "Micrófonos"', () => {
-    cy.get('[data-testid="nav-item-catalog"]').click();
-    
-    // 1. Clic en el filtro de Micrófonos
-    cy.get('[data-testid="filter-btn-micrófonos"]').click();
-    
-    // 2. Verificamos que el primer producto de esa categoría sea visible (ejemplo ID 1)
-    cy.get('[data-testid="product-card-1"]').should('be.visible');
-    
-    // 3. Verificamos que la tarjeta del producto 2 (Consolas) NO sea visible
-    cy.get('[data-testid="product-card-2"]').should('not.exist');
-  });
-  
-  // --- Caso de Prueba 4: Vista de Detalle y Link de Compra (Estabilizado) ---
-  it('4. Debe cargar el detalle del producto y verificar el link de WhatsApp', () => {
-    // 1. Navegación al Catálogo y click en el primer producto (ID 1)
-    cy.get('[data-testid="nav-item-catalog"]').click();
-    cy.get('[data-testid="product-card-1"]').click();
-    
-    // 2. Verificamos que la vista de detalle esté activa y muestre el título
-    cy.get('[data-testid="product-detail-view"]').should('be.visible');
-    cy.get('[data-testid="detail-title"]').should('contain', 'Micrófono Dinámico Vocal Series X');
-    
-    // 3. Aserción: Verificamos que el link de WhatsApp sea estable.
-    cy.get('[data-testid="whatsapp-button"]').should('have.attr', 'href')
-      .and('include', 'Hola%20SoundEmpire') 
-      .and('include', 'Vocal%20Series%20X'); 
-  });
+    beforeEach(() => {
+        // 1. Visitar URL (Puerto 6500)
+        cy.visit('http://localhost:6500/Prototipo.html'); 
+        
+        // 2. Verificaciones iniciales con DATA-QA
+        cy.get('[data-qa="logo"]').should('be.visible');
+        cy.get('[data-qa="cart-badge"]').should('not.exist');
+    });
 
-  // --- Caso de Prueba 5: Menú Responsivo (Móvil) ---
-  it('5. Debe abrir y navegar por el Menú Móvil (Hamburguesa)', () => {
-    // 1. Configurar la vista como un móvil (ej. iPhone 6)
-    cy.viewport('iphone-6');
-    cy.visit('http://localhost:5500/Prototipo.html'); 
-    
-    // 2. Verificar que el botón hamburguesa esté visible y el menú NO
-    cy.get('[data-testid="mobile-menu-toggle"]').should('be.visible');
+    // --- 1. NAVEGACIÓN ---
+    it('1. Navegación: Debe cambiar de vistas correctamente', () => {
+        cy.get('h2').should('contain.text', 'Destacados del Mes');
+        
+        cy.get('[data-qa="nav-catalogo"]').click();
+        cy.get('[data-qa="catalog-main"] h2').should('contain.text', 'Catálogo Completo');
+        cy.get('[data-qa="catalog-grid"]').children().should('have.length.at.least', 8);
+        
+        cy.get('[data-qa="nav-estudio"]').click();
+        cy.get('[data-qa="catalog-main"] h2').should('contain.text', 'Equipamiento de Estudio');
+    });
 
-    // 3. Clic para abrir el menú
-    cy.get('[data-testid="mobile-menu-toggle"]').click();
-    
-    // 4. Verificar que el menú se abrió
-    cy.get('[data-testid="mobile-menu-dropdown"]').should('be.visible');
-    
-    // 5. Navegar a una página (ej. Contacto) y verificar que el menú se cierre y la página cambie
-    cy.get('[data-testid="mobile-menu-dropdown"]').contains('Contacto').click();
+    // --- 2. DETALLE DE PRODUCTO ---
+    it('2. Detalle de Producto: Debe abrir la vista de detalle', () => {
+        const productId = 1;
+        const productName = 'Neumann U87 Ai Studio Set';
+        
+        cy.get(`[data-qa="product-name-${productId}"]`).first().click();
+        cy.get(`[data-qa="product-detail-${productId}"]`).should('be.visible');
+        cy.get('h1').should('contain.text', productName);
+        
+        cy.get('[data-qa="detail-back"]').click();
+        cy.get('[data-qa="catalog-main"] h2').should('contain.text', 'Catálogo Completo');
+    });
 
-    // 6. Verificar que el menú desaparezca y la página Contacto esté visible
-    cy.get('[data-testid="mobile-menu-dropdown"]').should('not.exist');
-    cy.get('[data-testid="contact-view"]').should('be.visible');
-  });
+    // --- 3. CARRITO ---
+    it('3. Carrito: Debe agregar, modificar cantidades, y eliminar ítems', () => {
+        const prodId1 = 4; // Universal Audio (Home)
+        const prodId2 = 7; // Sennheiser (Catálogo)
 
+        // A. Agregar desde Home
+        cy.get(`[data-qa="add-to-cart-${prodId1}"]`).first().click();
+        cy.get('[data-qa="cart-overlay"]').should('be.visible');
+        cy.get('[data-qa="cart-badge"]').should('contain.text', '1');
+        cy.get('[data-qa="cart-total"]').should('contain.text', '990.000');
+
+        // B. Aumentar cantidad
+        cy.get(`[data-qa="cart-increase-${prodId1}"]`).click();
+        cy.get(`[data-qa="cart-qty-${prodId1}"]`).should('contain.text', '2');
+        cy.get('[data-qa="cart-total"]').should('contain.text', '1.980.000');
+
+        // C. Cerrar e ir a buscar el segundo
+        cy.get('[data-qa="cart-close"]').click();
+        cy.get('[data-qa="cart-overlay"]').should('not.be.visible');
+        
+        // FIX: Ir al Catálogo explícitamente
+        cy.get('[data-qa="nav-catalogo"]').click();
+
+        // D. Agregar segundo producto
+        cy.get(`[data-qa="add-to-cart-${prodId2}"]`).first().click();
+        cy.get('[data-qa="cart-badge"]').should('contain.text', '3');
+        cy.get('[data-qa="cart-total"]').should('contain.text', '2.360.000');
+
+        // E. Eliminar
+        cy.get(`[data-qa="cart-remove-${prodId1}"]`).click();
+        cy.get(`[data-qa="cart-item"][data-product-id="${prodId1}"]`).should('not.exist');
+        cy.get('[data-qa="cart-badge"]').should('contain.text', '1');
+        
+        // F. Vaciar
+        cy.get(`[data-qa="cart-remove-${prodId2}"]`).click(); 
+        cy.contains('Tu carro está vacío').should('be.visible');
+    });
+    
+    // --- 4. CHECKOUT ---
+    it('4. Checkout: Debe completar el flujo de pago simulado exitosamente', () => {
+        const prodId = 6; // Moog (Catálogo)
+
+        // A. Ir al Catálogo
+        cy.get('[data-qa="nav-catalogo"]').click();
+
+        // B. Checkout
+        cy.get(`[data-qa="add-to-cart-${prodId}"]`).first().click();
+        cy.get('[data-qa="start-checkout"]').click();
+
+        // C. Modal
+        cy.get('[data-qa="payment-modal"]').should('be.visible');
+        cy.get('[data-qa="btn-pay-now"]').should('be.disabled');
+
+        // D. Flow
+        cy.get('[data-qa="payment-flow"]').click();
+        cy.get('[data-qa="btn-pay-now"]').should('not.be.disabled').click();
+
+        // E. Éxito (Timeout extendido)
+        cy.get('[data-qa="success-screen"]', { timeout: 6000 }).should('be.visible');
+        cy.get('[data-qa="success-method"]').should('contain.text', 'flow');
+
+        // F. Reset
+        cy.get('[data-qa="btn-back-store"]').click();
+        cy.get('[data-qa="success-screen"]').should('not.be.visible');
+        cy.get('[data-qa="cart-badge"]').should('not.exist');
+    });
 });

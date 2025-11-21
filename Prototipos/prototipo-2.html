@@ -18,7 +18,7 @@
                 extend: {
                     colors: {
                         slate: {
-                            850: '#151e2e', // Un tono extra para fondos
+                            850: '#151e2e',
                         }
                     },
                     fontFamily: {
@@ -42,6 +42,24 @@
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         .slide-in-right { animation: slideInRight 0.3s ease-out forwards; }
         .slide-out-right { animation: slideOutRight 0.3s ease-in forwards; }
+        
+        /* Animación Slider Hero */
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            z-index: 0;
+        }
+        .hero-slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+        /* Contenido encima del slider */
+        .hero-content {
+            position: relative;
+            z-index: 20;
+        }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
@@ -55,32 +73,32 @@
 <body class="antialiased selection:bg-blue-600 selection:text-white">
 
     <!-- NAVBAR -->
-    <nav class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
+    <nav class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800" role="navigation" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="navegar('home')">
-                    <div class="w-10 h-10 bg-blue-600 rounded flex items-center justify-center">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="navegar('home')" data-qa="logo" aria-label="Ir al inicio">
+                    <div class="w-10 h-10 bg-blue-600 rounded flex items-center justify-center" data-qa="logo-icon">
                         <i data-lucide="music" class="text-white w-6 h-6"></i>
                     </div>
-                    <span class="font-bold text-xl tracking-wider text-slate-50">SOUND<span class="text-blue-500">EMPIRE</span></span>
+                    <span class="font-bold text-xl tracking-wider text-slate-50" data-qa="brand">SOUND<span class="text-blue-500">EMPIRE</span></span>
                 </div>
 
                 <!-- Menú Escritorio -->
-                <div class="hidden md:block">
+                <div class="hidden md:block" role="menubar" aria-label="Menú principal">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <button onclick="navegar('home')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Inicio</button>
-                        <button onclick="navegar('catalogo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Catálogo</button>
-                        <button onclick="navegar('estudio')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Estudio</button>
-                        <button onclick="navegar('vivo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">PA & Vivo</button>
+                        <button data-qa="nav-home" onclick="navegar('home')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" role="menuitem">Inicio</button>
+                        <button data-qa="nav-catalogo" onclick="navegar('catalogo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" role="menuitem">Catálogo</button>
+                        <button data-qa="nav-estudio" onclick="navegar('estudio')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" role="menuitem">Estudio</button>
+                        <button data-qa="nav-vivo" onclick="navegar('vivo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" role="menuitem">PA & Vivo</button>
                     </div>
                 </div>
 
                 <!-- Carrito Botón -->
                 <div class="flex items-center gap-4">
-                    <button onclick="toggleCart(true)" class="relative p-2 text-slate-300 hover:text-blue-400 transition-colors group">
+                    <button data-qa="cart-button" onclick="toggleCart(true)" class="relative p-2 text-slate-300 hover:text-blue-400 transition-colors group" aria-haspopup="dialog" aria-controls="cart-overlay" aria-label="Abrir carrito">
                         <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
-                        <span id="cart-badge" class="hidden absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-blue-600 rounded-full shadow-lg">0</span>
+                        <span id="cart-badge" class="hidden absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-blue-600 rounded-full shadow-lg" data-qa="cart-badge">0</span>
                     </button>
                 </div>
             </div>
@@ -88,12 +106,12 @@
     </nav>
 
     <!-- CONTENEDOR PRINCIPAL (Las vistas se renderizan aquí) -->
-    <div id="main-content">
+    <div id="main-content" data-qa="main-content">
         <!-- El contenido se inyecta vía JS -->
     </div>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-950 border-t border-slate-800 mt-auto py-12">
+    <footer class="bg-slate-950 border-t border-slate-800 mt-auto py-12" role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
                 <span class="font-bold text-xl tracking-wider text-slate-50">SOUND<span class="text-blue-600">EMPIRE</span></span>
@@ -113,32 +131,32 @@
     </footer>
 
     <!-- OVERLAY CARRITO -->
-    <div id="cart-overlay" class="fixed inset-0 z-50 hidden">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCart(false)"></div>
+    <div id="cart-overlay" class="fixed inset-0 z-50 hidden" aria-hidden="true" data-qa="cart-overlay" role="dialog" aria-label="Carrito de compras">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCart(false)" data-qa="cart-backdrop"></div>
         <div class="fixed inset-y-0 right-0 max-w-full flex">
             <div class="w-screen max-w-md bg-slate-900 border-l border-slate-700 shadow-2xl flex flex-col h-full slide-in-right">
                 
                 <!-- Header Carrito -->
                 <div class="px-4 sm:px-6 py-6 flex items-start justify-between border-b border-slate-800">
-                    <h2 class="text-xl font-bold text-white">Carro de Compras</h2>
-                    <button onclick="toggleCart(false)" class="text-slate-400 hover:text-white">
+                    <h2 class="text-xl font-bold text-white" data-qa="cart-title">Carro de Compras</h2>
+                    <button data-qa="cart-close" onclick="toggleCart(false)" class="text-slate-400 hover:text-white" aria-label="Cerrar carrito">
                         <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
                 </div>
 
                 <!-- Lista Items -->
-                <div class="flex-1 py-6 overflow-y-auto px-4 sm:px-6 no-scrollbar" id="cart-items-container">
+                <div class="flex-1 py-6 overflow-y-auto px-4 sm:px-6 no-scrollbar" id="cart-items-container" data-qa="cart-items-container">
                     <!-- Se llena con JS -->
                 </div>
 
                 <!-- Footer Carrito -->
-                <div id="cart-footer" class="border-t border-slate-800 py-6 px-4 sm:px-6 bg-slate-800 hidden">
+                <div id="cart-footer" class="border-t border-slate-800 py-6 px-4 sm:px-6 bg-slate-800 hidden" data-qa="cart-footer">
                     <div class="flex justify-between text-base font-medium text-white mb-2">
                         <p>Subtotal</p>
-                        <p id="cart-total">$0</p>
+                        <p id="cart-total" data-qa="cart-total">$0</p>
                     </div>
                     <p class="text-xs text-slate-500 mb-6 text-center">Al continuar, aceptas ser redirigido a una pasarela externa segura.</p>
-                    <button onclick="iniciarCheckout()" class="w-full flex justify-center items-center px-6 py-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all hover:scale-[1.02]">
+                    <button data-qa="start-checkout" onclick="iniciarCheckout()" class="w-full flex justify-center items-center px-6 py-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all hover:scale-[1.02]">
                         Pagar con Flow / MercadoPago
                     </button>
                 </div>
@@ -147,15 +165,15 @@
     </div>
 
     <!-- MODAL PAGO -->
-    <div id="payment-modal" class="fixed inset-0 z-[60] overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div id="payment-modal" class="fixed inset-0 z-[60] overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true" data-qa="payment-modal">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-black/90 transition-opacity" onclick="cerrarModalPago()"></div>
+            <div class="fixed inset-0 bg-black/90 transition-opacity" onclick="cerrarModalPago()" data-qa="payment-backdrop"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             
             <div class="inline-block align-bottom bg-slate-800 rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-700">
                 
                 <!-- Contenido Inicial Modal -->
-                <div id="payment-content">
+                <div id="payment-content" data-qa="payment-content">
                     <div class="bg-slate-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-900/30 sm:mx-0 sm:h-10 sm:w-10 border border-blue-500/30">
@@ -168,7 +186,7 @@
                                     
                                     <div class="space-y-3">
                                         <!-- Flow -->
-                                        <div onclick="seleccionarMetodo('flow')" id="method-flow" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between hover:bg-slate-700/30 transition-all">
+                                        <div onclick="seleccionarMetodo('flow')" id="method-flow" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between hover:bg-slate-700/30 transition-all" data-qa="payment-flow" role="button" aria-pressed="false" tabindex="0">
                                             <div class="flex items-center">
                                                 <div class="h-10 w-16 bg-white rounded flex items-center justify-center mr-4 shadow-sm">
                                                     <span class="text-blue-900 font-black text-lg tracking-tighter italic">flow</span>
@@ -182,7 +200,7 @@
                                         </div>
 
                                         <!-- MercadoPago -->
-                                        <div onclick="seleccionarMetodo('mercadopago')" id="method-mercadopago" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between hover:bg-slate-700/30 transition-all">
+                                        <div onclick="seleccionarMetodo('mercadopago')" id="method-mercadopago" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between hover:bg-slate-700/30 transition-all" data-qa="payment-mercadopago" role="button" aria-pressed="false" tabindex="0">
                                             <div class="flex items-center">
                                                 <div class="h-10 w-16 bg-blue-500 rounded flex items-center justify-center mr-4 shadow-sm">
                                                     <span class="text-white font-bold text-xs">MercadoPago</span>
@@ -198,24 +216,24 @@
 
                                     <div class="mt-6 bg-slate-900 rounded-lg p-4 flex justify-between items-center border border-slate-700">
                                         <span class="text-slate-400 text-sm">Total a pagar:</span>
-                                        <span class="text-xl font-bold text-white" id="modal-total">$0</span>
+                                        <span class="text-xl font-bold text-white" id="modal-total" data-qa="modal-total">$0</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="bg-slate-700/30 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-slate-700">
-                        <button type="button" id="btn-pay-now" disabled onclick="procesarPago()" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 text-base font-bold text-white bg-slate-600 cursor-not-allowed opacity-50 sm:ml-3 sm:w-auto sm:text-sm transition-all">
+                        <button type="button" id="btn-pay-now" disabled onclick="procesarPago()" data-qa="btn-pay-now" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 text-base font-bold text-white bg-slate-600 cursor-not-allowed opacity-50 sm:ml-3 sm:w-auto sm:text-sm transition-all" aria-disabled="true">
                             Ir a Pagar Ahora
                         </button>
-                        <button type="button" onclick="cerrarModalPago()" class="mt-3 w-full inline-flex justify-center rounded-lg border border-slate-600 shadow-sm px-4 py-2 bg-transparent text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                        <button type="button" onclick="cerrarModalPago()" data-qa="btn-cancel-pay" class="mt-3 w-full inline-flex justify-center rounded-lg border border-slate-600 shadow-sm px-4 py-2 bg-transparent text-base font-medium text-slate-300 hover:text-white hover:bg-slate-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
                             Cancelar
                         </button>
                     </div>
                 </div>
 
                 <!-- Estado Cargando -->
-                <div id="payment-loading" class="hidden p-12 flex-col items-center justify-center text-center">
+                <div id="payment-loading" class="hidden p-12 flex-col items-center justify-center text-center" data-qa="payment-loading">
                     <div class="relative w-16 h-16 mb-6">
                         <div class="absolute inset-0 border-4 border-slate-700 rounded-full"></div>
                         <div class="absolute inset-0 border-4 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
@@ -229,15 +247,15 @@
     </div>
 
     <!-- PANTALLA ÉXITO -->
-    <div id="success-screen" class="fixed inset-0 z-[70] bg-slate-900 hidden items-center justify-center px-4 fade-in">
+    <div id="success-screen" class="fixed inset-0 z-[70] bg-slate-900 hidden items-center justify-center px-4 fade-in" data-qa="success-screen" role="status" aria-live="polite">
         <div class="max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-green-500/30 shadow-2xl text-center relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-green-500 to-blue-500"></div>
             <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-900/30 mb-6 border-2 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.2)]">
                 <i data-lucide="shield-check" class="h-10 w-10 text-green-400"></i>
             </div>
             <h2 class="text-3xl font-extrabold text-white mb-2">¡Pago Exitoso!</h2>
-            <p class="text-slate-400 mb-8">Tu orden ha sido confirmada vía <span id="success-method" class="text-blue-400 font-bold capitalize"></span>.</p>
-            <button onclick="resetApp()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition-all hover:scale-[1.02] shadow-lg">
+            <p class="text-slate-400 mb-8">Tu orden ha sido confirmada vía <span id="success-method" class="text-blue-400 font-bold capitalize" data-qa="success-method"></span>.</p>
+            <button onclick="resetApp()" data-qa="btn-back-store" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition-all hover:scale-[1.02] shadow-lg">
                 Volver a la Tienda
             </button>
         </div>
@@ -247,12 +265,12 @@
     <script>
         // --- DATOS ---
         const PRODUCTOS = [
-            { id: 1, nombre: "Neumann U87 Ai Studio Set", categoria: "Microfonos", grupo: "Estudio", precio: 3290000, imagen: "https://images.unsplash.com/photo-1558736926-892c74e8848c?q=80&w=800&auto=format&fit=crop", descripcion: "El estándar de oro para estudios de grabación.", specs: ["Patrón: Multi-patrón", "Rango: 20Hz-20kHz"], stock: 5 },
+            { id: 1, nombre: "Neumann U87 Ai Studio Set", categoria: "Microfonos", grupo: "Estudio", precio: 3290000, imagen: "https://images.unsplash.com/photo-1485579149621-3123dd979885?q=80&w=800&auto=format&fit=crop", descripcion: "El estándar de oro para estudios de grabación.", specs: ["Patrón: Multi-patrón", "Rango: 20Hz-20kHz"], stock: 5 },
             { id: 2, nombre: "Solid State Logic SSL SiX", categoria: "Consolas", grupo: "PA & Vivo", precio: 1850000, imagen: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=800&auto=format&fit=crop", descripcion: "Compresión de bus SSL en formato escritorio.", specs: ["6 Canales", "SuperAnalogue Preamps"], stock: 3 },
             { id: 3, nombre: "Adam Audio A7V (Par)", categoria: "Monitores", grupo: "Estudio", precio: 1450000, imagen: "https://images.unsplash.com/photo-1519508234439-4f23643125c1?q=80&w=800&auto=format&fit=crop", descripcion: "Precisión alemana con tweeter X-ART.", specs: ["Woofer 7\"", "Tweeter Cinta"], stock: 8 },
             { id: 4, nombre: "Universal Audio Apollo Twin X", categoria: "Interfaces", grupo: "Estudio", precio: 990000, imagen: "https://images.unsplash.com/photo-1519683109079-d5f539e1542f?q=80&w=800&auto=format&fit=crop", descripcion: "Procesamiento UAD en tiempo real.", specs: ["Thunderbolt 3", "2 Unison Preamps"], stock: 12 },
             { id: 5, nombre: "Shure SM7B Vocal Mic", categoria: "Microfonos", grupo: "Estudio", precio: 450000, imagen: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=800&auto=format&fit=crop", descripcion: "Legendario para podcast y voces rock.", specs: ["Dinámico Cardioide", "Shielding interno"], stock: 20 },
-            { id: 6, nombre: "Moog Sub 37 Analog Synth", categoria: "Sintetizadores", grupo: "PA & Vivo", precio: 1950000, imagen: "https://images.unsplash.com/photo-1563330280-cb5342a92512?q=80&w=800&auto=format&fit=crop", descripcion: "Sintetizador parafónico analógico.", specs: ["37 Teclas", "Duo Mode"], stock: 2 },
+            { id: 6, nombre: "Moog Sub 37 Analog Synth", categoria: "Sintetizadores", grupo: "PA & Vivo", precio: 1950000, imagen: "https://images.unsplash.com/photo-1615234427523-68d6890665e5?q=80&w=800&auto=format&fit=crop", descripcion: "Sintetizador parafónico analógico.", specs: ["37 Teclas", "Duo Mode"], stock: 2 },
             { id: 7, nombre: "Sennheiser HD 650", categoria: "Audifonos", grupo: "Estudio", precio: 380000, imagen: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop", descripcion: "Referencia abierta para mezcla.", specs: ["300 Ohms", "Open Back"], stock: 15 },
             { id: 8, nombre: "Korg Kronos 2 88", categoria: "Teclados", grupo: "PA & Vivo", precio: 3100000, imagen: "https://images.unsplash.com/photo-1551819261-302d27303187?q=80&w=800&auto=format&fit=crop", descripcion: "Workstation definitiva.", specs: ["9 Motores Sonido", "88 Teclas Hammer"], stock: 1 }
         ];
@@ -261,6 +279,7 @@
         let cart = [];
         let currentView = 'home';
         let selectedMethod = null;
+        let heroInterval = null;
 
         // --- UTILIDADES ---
         const formatCLP = (amount) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(amount);
@@ -268,18 +287,24 @@
         // --- RENDERIZADO PRINCIPAL ---
         function navegar(vista, productId = null) {
             currentView = vista;
+            
+            if (heroInterval) {
+                clearInterval(heroInterval);
+                heroInterval = null;
+            }
+
             const container = document.getElementById('main-content');
             window.scrollTo(0, 0);
 
             // Actualizar estilos navbar active
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('text-blue-400', 'bg-slate-800');
-                if(btn.innerText.toLowerCase().includes(vista) || (vista === 'home' && btn.innerText === 'Inicio')) {
+                const txt = (btn.innerText || '').toLowerCase();
+                if(txt.includes(vista) || (vista === 'home' && txt.includes('inicio'))) {
                     btn.classList.add('text-blue-400', 'bg-slate-800');
                 }
             });
 
-            // Router simple
             if (vista === 'home') renderHome(container);
             else if (vista === 'detalle') renderDetalle(container, productId);
             else renderCatalogo(container, vista);
@@ -287,29 +312,101 @@
             lucide.createIcons();
         }
 
+        // --- LÓGICA DEL SLIDER ---
         function renderHome(container) {
-            container.innerHTML = `
-                <div class="relative bg-slate-900 overflow-hidden mb-12 fade-in">
+            const slides = [
+                {
+                    img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop",
+                    title: "Sonido Profesional <span class='text-blue-500'>Sin Compromisos</span>",
+                    desc: "Equipamiento High-End para estudios, productores e ingenieros."
+                },
+                {
+                    img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop",
+                    title: "Tu Estudio <span class='text-blue-500'>Al Siguiente Nivel</span>",
+                    desc: "Micrófonos, interfaces y monitores de las marcas más prestigiosas."
+                },
+                {
+                    img: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=2070&auto=format&fit=crop",
+                    title: "Potencia y Claridad <span class='text-blue-500'>En Vivo</span>",
+                    desc: "Sistemas de PA y consolas digitales para giras y eventos masivos."
+                }
+            ];
+
+            const slidesHTML = slides.map((slide, index) => `
+                <div class="hero-slide ${index === 0 ? 'active' : ''}" id="slide-${index}" data-qa="slide-${index}">
                     <div class="absolute inset-0">
-                        <img class="w-full h-full object-cover opacity-30 scale-105" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop" alt="Stage">
+                        <img class="w-full h-full object-cover opacity-40 scale-105 transform transition-transform duration-[10000ms]" src="${slide.img}" alt="Slide Image ${index}">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
                     </div>
-                    <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
-                        <h1 class="text-4xl font-extrabold text-white sm:text-5xl lg:text-6xl drop-shadow-lg">Sonido Profesional <span class="text-blue-500">Sin Compromisos</span></h1>
-                        <p class="mt-6 text-xl text-slate-300 max-w-3xl">Equipamiento High-End para estudios. Asesoría técnica especializada y pago seguro integrado.</p>
-                        <div class="mt-10 max-w-sm">
-                            <button onclick="navegar('catalogo')" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10 shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all">Ver Catálogo Completo</button>
+                    <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 h-full flex items-center">
+                        <div class="hero-content w-full">
+                            <h1 class="text-4xl font-extrabold text-white sm:text-5xl lg:text-6xl drop-shadow-lg animate-fade-in-up">
+                                ${slide.title}
+                            </h1>
+                            <p class="mt-6 text-xl text-slate-300 max-w-3xl shadow-black drop-shadow-md animate-fade-in-up">
+                                ${slide.desc}
+                            </p>
+                            <div class="mt-10 max-w-sm">
+                                <button data-qa="hero-cta" onclick="navegar('catalogo')" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-10 shadow-[0_0_20px_rgba(37,99,235,0.3)] transition-all">Ver Catálogo Completo</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            `).join('');
+
+            const dotsHTML = `
+                <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex space-x-3" data-qa="slider-dots">
+                    ${slides.map((_, index) => `
+                        <button onclick="manualSlide(${index})" class="w-3 h-3 rounded-full transition-all ${index === 0 ? 'bg-blue-500 w-8' : 'bg-slate-500 hover:bg-slate-300'}" id="dot-${index}" data-qa="dot-${index}" aria-label="Ir al slide ${index}"></button>
+                    `).join('')}
+                </div>
+            `;
+
+            container.innerHTML = `
+                <div class="relative bg-slate-900 overflow-hidden mb-12 h-[600px] fade-in" data-qa="hero">
+                    ${slidesHTML}
+                    ${dotsHTML}
+                </div>
                 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                     <h2 class="text-3xl font-bold text-white mb-10">Destacados del Mes</h2>
-                    <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                    <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-4 xl:gap-x-8" data-qa="featured-grid">
                         ${PRODUCTOS.slice(0,4).map(p => cardHTML(p)).join('')}
                     </div>
                     ${renderTrustSection()}
                 </main>
             `;
+
+            initSlider(slides.length);
+        }
+
+        function initSlider(totalSlides) {
+            let currentSlide = 0;
+            
+            const changeSlide = (nextIndex) => {
+                document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+                document.getElementById(`dot-${currentSlide}`).classList.remove('bg-blue-500', 'w-8');
+                document.getElementById(`dot-${currentSlide}`).classList.add('bg-slate-500');
+
+                currentSlide = nextIndex;
+                document.getElementById(`slide-${currentSlide}`).classList.add('active');
+                document.getElementById(`dot-${currentSlide}`).classList.remove('bg-slate-500');
+                document.getElementById(`dot-${currentSlide}`).classList.add('bg-blue-500', 'w-8');
+            };
+
+            heroInterval = setInterval(() => {
+                const next = (currentSlide + 1) % totalSlides;
+                changeSlide(next);
+            }, 5000);
+
+            window.manualSlide = (index) => {
+                if (index === currentSlide) return;
+                clearInterval(heroInterval);
+                changeSlide(index);
+                heroInterval = setInterval(() => {
+                    const next = (currentSlide + 1) % totalSlides;
+                    changeSlide(next);
+                }, 5000);
+            };
         }
 
         function renderCatalogo(container, filtro) {
@@ -319,12 +416,12 @@
             if (filtro === 'vivo') { items = PRODUCTOS.filter(p => p.grupo === 'PA & Vivo'); titulo = "Sonido en Vivo & PA"; }
 
             container.innerHTML = `
-                <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 fade-in">
+                <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 fade-in" data-qa="catalog-main">
                     <div class="mb-8 pb-4 border-b border-slate-800">
                         <h2 class="text-3xl font-bold text-white">${titulo}</h2>
                         <p class="text-slate-400 mt-2">Mostrando ${items.length} productos profesionales</p>
                     </div>
-                    <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                    <div class="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-4 xl:gap-x-8" data-qa="catalog-grid">
                         ${items.map(p => cardHTML(p)).join('')}
                     </div>
                     ${filtro === 'catalogo' ? renderTrustSection() : ''}
@@ -339,13 +436,13 @@
             const specsHTML = p.specs.map(s => `<li class="flex items-start"><div class="flex-shrink-0 h-5 w-5 flex items-center justify-center rounded-full bg-slate-800 border border-slate-600 mr-3"><div class="h-1.5 w-1.5 rounded-full bg-blue-500"></div></div>${s}</li>`).join('');
 
             container.innerHTML = `
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 fade-in">
-                    <button onclick="navegar('catalogo')" class="flex items-center text-slate-400 hover:text-white mb-8 group">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 fade-in" data-qa="product-detail-${p.id}">
+                    <button onclick="navegar('catalogo')" class="flex items-center text-slate-400 hover:text-white mb-8 group" data-qa="detail-back">
                         <i data-lucide="arrow-left" class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform"></i> Volver
                     </button>
                     <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 lg:items-start">
                         <div class="w-full aspect-w-1 aspect-h-1 bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden shadow-2xl mb-8 lg:mb-0">
-                            <img src="${p.imagen}" class="w-full h-full object-cover">
+                            <img src="${p.imagen}" class="w-full h-full object-cover" alt="${p.nombre}">
                         </div>
                         <div class="px-4 sm:px-0">
                             <div class="mb-4 flex items-center gap-2">
@@ -363,7 +460,7 @@
                             <div class="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
                                 <p class="text-3xl font-bold text-white mb-1">${formatCLP(p.precio)}</p>
                                 <p class="text-sm text-slate-400 mb-6">IVA incluido</p>
-                                <button onclick="addToCart(${p.id})" class="w-full bg-blue-600 rounded-lg py-4 flex items-center justify-center text-white font-medium hover:bg-blue-700 transition-all hover:scale-[1.02] shadow-lg shadow-blue-900/50">
+                                <button data-qa="add-to-cart-detail" onclick="addToCart(${p.id})" class="w-full bg-blue-600 rounded-lg py-4 flex items-center justify-center text-white font-medium hover:bg-blue-700 transition-all hover:scale-[1.02] shadow-lg shadow-blue-900/50">
                                     <i data-lucide="shopping-cart" class="w-5 h-5 mr-2"></i> Agregar al Carro
                                 </button>
                             </div>
@@ -385,17 +482,17 @@
 
         function cardHTML(p) {
             return `
-                <div class="group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all shadow-lg flex flex-col h-full">
-                    <div class="relative h-64 bg-slate-900 cursor-pointer overflow-hidden" onclick="navegar('detalle', ${p.id})">
-                        <img src="${p.imagen}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                <div class="group bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all shadow-lg flex flex-col h-full" data-qa="product-card" data-product-id="${p.id}">
+                    <div class="relative h-64 bg-slate-900 cursor-pointer overflow-hidden" onclick="navegar('detalle', ${p.id})" data-qa="product-image-${p.id}" role="link" aria-label="Ver detalle ${p.nombre}">
+                        <img src="${p.imagen}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="${p.nombre}">
                         <div class="absolute top-2 right-2 bg-slate-900/90 backdrop-blur px-3 py-1 rounded-full text-xs text-blue-400 font-mono border border-slate-700 shadow-sm">${p.categoria}</div>
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-lg font-bold text-white truncate cursor-pointer hover:text-blue-400" onclick="navegar('detalle', ${p.id})">${p.nombre}</h3>
+                        <h3 class="text-lg font-bold text-white truncate cursor-pointer hover:text-blue-400" onclick="navegar('detalle', ${p.id})" data-qa="product-name-${p.id}">${p.nombre}</h3>
                         <p class="mt-1 text-sm text-slate-400 line-clamp-2 mb-4 flex-grow">${p.descripcion}</p>
                         <div class="flex items-end justify-between pt-4 border-t border-slate-700/50 mt-auto">
-                            <div><span class="text-xs text-slate-500 block">Precio</span><span class="text-xl font-bold text-blue-400">${formatCLP(p.precio)}</span></div>
-                            <button onclick="addToCart(${p.id})" class="rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-600 transition-all"><i data-lucide="shopping-cart" class="w-4 h-4 inline mr-1"></i> Agregar</button>
+                            <div><span class="text-xs text-slate-500 block">Precio</span><span class="text-xl font-bold text-blue-400" data-qa="product-price-${p.id}">${formatCLP(p.precio)}</span></div>
+                            <button data-qa="add-to-cart-${p.id}" onclick="addToCart(${p.id})" class="rounded-lg bg-slate-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-600 transition-all"><i data-lucide="shopping-cart" class="w-4 h-4 inline mr-1"></i> Agregar</button>
                         </div>
                     </div>
                 </div>
@@ -430,12 +527,10 @@
             const count = cart.reduce((a, b) => a + b.qty, 0);
             const total = cart.reduce((a, b) => a + (b.precio * b.qty), 0);
             
-            // Badge Navbar
             const badge = document.getElementById('cart-badge');
             badge.innerText = count;
             badge.classList.toggle('hidden', count === 0);
 
-            // Items Lista
             const container = document.getElementById('cart-items-container');
             const footer = document.getElementById('cart-footer');
             
@@ -444,17 +539,17 @@
                 footer.classList.add('hidden');
             } else {
                 container.innerHTML = `<ul class="-my-6 divide-y divide-slate-700">` + cart.map(item => `
-                    <li class="py-6 flex">
-                        <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border border-slate-700"><img src="${item.imagen}" class="h-full w-full object-cover"></div>
+                    <li class="py-6 flex" data-qa="cart-item" data-product-id="${item.id}">
+                        <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border border-slate-700"><img src="${item.imagen}" class="h-full w-full object-cover" alt="${item.nombre}"></div>
                         <div class="ml-4 flex flex-1 flex-col">
-                            <div><div class="flex justify-between text-base font-medium text-white"><h3>${item.nombre}</h3><p class="ml-4 text-blue-400">${formatCLP(item.precio * item.qty)}</p></div></div>
+                            <div><div class="flex justify-between text-base font-medium text-white"><h3 data-qa="cart-item-name-${item.id}">${item.nombre}</h3><p class="ml-4 text-blue-400" data-qa="cart-item-total-${item.id}">${formatCLP(item.precio * item.qty)}</p></div></div>
                             <div class="flex flex-1 items-end justify-between text-sm">
                                 <div class="flex items-center border border-slate-700 rounded bg-slate-800">
-                                    <button onclick="updateQty(${item.id}, -1)" class="p-1 hover:text-blue-400"><i data-lucide="minus" class="w-3 h-3"></i></button>
-                                    <span class="px-2 text-white">${item.qty}</span>
-                                    <button onclick="updateQty(${item.id}, 1)" class="p-1 hover:text-blue-400"><i data-lucide="plus" class="w-3 h-3"></i></button>
+                                    <button data-qa="cart-decrease-${item.id}" onclick="updateQty(${item.id}, -1)" class="p-1 hover:text-blue-400" aria-label="Disminuir cantidad"><i data-lucide="minus" class="w-3 h-3"></i></button>
+                                    <span class="px-2 text-white" data-qa="cart-qty-${item.id}">${item.qty}</span>
+                                    <button data-qa="cart-increase-${item.id}" onclick="updateQty(${item.id}, 1)" class="p-1 hover:text-blue-400" aria-label="Aumentar cantidad"><i data-lucide="plus" class="w-3 h-3"></i></button>
                                 </div>
-                                <button onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-300 flex items-center"><i data-lucide="trash-2" class="w-3 h-3 mr-1"></i> Eliminar</button>
+                                <button data-qa="cart-remove-${item.id}" onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-300 flex items-center" aria-label="Eliminar producto"><i data-lucide="trash-2" class="w-3 h-3 mr-1"></i> Eliminar</button>
                             </div>
                         </div>
                     </li>
@@ -468,8 +563,13 @@
 
         function toggleCart(show) {
             const overlay = document.getElementById('cart-overlay');
-            if (show) overlay.classList.remove('hidden');
-            else overlay.classList.add('hidden');
+            if (show) {
+                overlay.classList.remove('hidden');
+                overlay.setAttribute('aria-hidden', 'false');
+            } else {
+                overlay.classList.add('hidden');
+                overlay.setAttribute('aria-hidden', 'true');
+            }
         }
 
         // --- LÓGICA PAGO ---
@@ -478,12 +578,13 @@
             const total = cart.reduce((a, b) => a + (b.precio * b.qty), 0);
             document.getElementById('modal-total').innerText = formatCLP(total);
             document.getElementById('payment-modal').classList.remove('hidden');
-            // Reset UI modal
+            document.getElementById('payment-modal').setAttribute('aria-hidden', 'false');
             document.getElementById('payment-content').classList.remove('hidden');
             document.getElementById('payment-loading').classList.add('hidden');
             document.querySelectorAll('.payment-option').forEach(el => {
                 el.classList.remove('border-blue-500', 'bg-blue-900/20', 'ring-1', 'ring-blue-500');
-                el.querySelector('.check-circle').classList.add('hidden');
+                const check = el.querySelector('.check-circle');
+                if (check) check.classList.add('hidden');
             });
             document.getElementById('btn-pay-now').disabled = true;
             document.getElementById('btn-pay-now').classList.remove('bg-blue-600', 'hover:bg-blue-700');
@@ -495,12 +596,15 @@
             selectedMethod = metodo;
             document.querySelectorAll('.payment-option').forEach(el => {
                 el.classList.remove('border-blue-500', 'bg-blue-900/20', 'ring-1', 'ring-blue-500');
-                el.querySelector('.check-circle').classList.add('hidden');
+                const check = el.querySelector('.check-circle');
+                if (check) check.classList.add('hidden');
+                el.setAttribute('aria-pressed', 'false');
             });
             const active = document.getElementById(`method-${metodo}`);
             active.classList.add('border-blue-500', 'bg-blue-900/20', 'ring-1', 'ring-blue-500');
-            active.querySelector('.check-circle').classList.remove('hidden');
-            active.querySelector('.check-circle').classList.add('flex');
+            const checkActive = active.querySelector('.check-circle');
+            if (checkActive) { checkActive.classList.remove('hidden'); checkActive.classList.add('flex'); }
+            active.setAttribute('aria-pressed', 'true');
 
             const btn = document.getElementById('btn-pay-now');
             btn.disabled = false;
@@ -510,6 +614,7 @@
 
         function cerrarModalPago() {
             document.getElementById('payment-modal').classList.add('hidden');
+            document.getElementById('payment-modal').setAttribute('aria-hidden', 'true');
         }
 
         function procesarPago() {
@@ -520,6 +625,7 @@
 
             setTimeout(() => {
                 document.getElementById('payment-modal').classList.add('hidden');
+                document.getElementById('payment-modal').setAttribute('aria-hidden', 'true');
                 document.getElementById('success-method').innerText = selectedMethod;
                 document.getElementById('success-screen').classList.remove('hidden');
                 document.getElementById('success-screen').classList.add('flex');
@@ -533,6 +639,23 @@
             document.getElementById('success-screen').classList.remove('flex');
             navegar('home');
         }
+
+        // --- UTILIDADES PARA QA AUTOMATION (expuestas globalmente) ---
+        window.QA = {
+            getCart: () => JSON.parse(JSON.stringify(cart)),
+            getView: () => currentView,
+            clearCart: () => { cart = []; updateCartUI(); return true; },
+            setCart: (newCart) => { if (Array.isArray(newCart)) { cart = JSON.parse(JSON.stringify(newCart)); updateCartUI(); return true; } return false; },
+            navigateTo: (vista, productId = null) => { navegar(vista, productId); return true; },
+            selectPaymentMethod: (method) => { seleccionarMetodo(method); return true; },
+            pressPayNow: () => { procesarPago(); return true; },
+            isElementVisible: (selector) => {
+                const el = document.querySelector(selector);
+                if (!el) return false;
+                const style = getComputedStyle(el);
+                return style.display !== 'none' && style.visibility !== 'hidden' && el.offsetParent !== null;
+            }
+        };
 
         // --- INICIO ---
         window.onload = () => navegar('home');
