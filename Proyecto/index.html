@@ -31,7 +31,7 @@
 
     <!-- CSS Externo -->
     <link rel="stylesheet" href="ASSETS/CSS/styles.css">
-    <script src="ASSETS/JS/main.js"></script>
+    
 
 </head>
 
@@ -99,8 +99,43 @@
 
     <!-- Aquí pega todo tu HTML restante tal como lo enviaste... -->
     <!-- Carrito, modal de pago, success screen, etc. -->
+<!-- CARRITO OVERLAY se agrega líneas 103-130 para corregir el problema del carrito   -->
+<div id="cart-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden">
+    <div class="absolute right-0 top-0 h-full w-full max-w-md bg-slate-900 shadow-xl border-l border-slate-700 flex flex-col">
+
+        <!-- Header -->
+        <div class="p-6 flex justify-between items-center border-b border-slate-700">
+            <h2 class="text-xl font-semibold text-white">Tu Carro</h2>
+            <button onclick="toggleCart(false)" class="text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Items -->
+        <div id="cart-items-container" class="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+        </div>
+
+        <!-- Footer -->
+        <div id="cart-footer" class="p-6 border-t border-slate-700 hidden">
+            <div class="flex justify-between mb-4">
+                <span class="text-slate-400">Total:</span>
+                <span id="cart-total" class="text-xl font-bold text-white"></span>
+            </div>
+            <button onclick="iniciarCheckout()"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-all">
+                Ir al Pago
+            </button>
+        </div>
+    </div>
+</div>
+
+    <!-- BOTÓN SUBIR -->
+    <button id="btn-scroll-top"
+        class="hidden fixed bottom-6 right-6 bg-blue-600 text-white p-3 rounded-full shadow-xl hover:bg-blue-700 transition-all duration-300">
+        <i data-lucide="arrow-up" class="w-5 h-5"></i>
+    </button>
 
     <!-- SCRIPT -->
-    <script src="main.js"></script>
+    <script src="ASSETS/JS/main.js"></script>
 </body>
 </html>
