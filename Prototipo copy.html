@@ -25,24 +25,19 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-
+        
         /* Animaciones */
         .fade-in { animation: fadeIn 0.5s ease-in-out; }
         .slide-in-right { animation: slideInRight 0.3s ease-out forwards; }
         
-        .animate-fade-in-up { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .is-animating .animate-fade-in-up { opacity: 1; transform: translateY(0); }
-        .is-animating .animate-fade-in-up:nth-child(2) { transition-delay: 0.1s; }
-        .is-animating .animate-fade-in-up:nth-child(3) { transition-delay: 0.2s; }
-        .is-animating .animate-fade-in-up:nth-child(4) { transition-delay: 0.3s; }
-
+        /* Animación Slider */
         .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease-in-out; z-index: 0; }
         .hero-slide.active { opacity: 1; z-index: 10; }
         .hero-content { position: relative; z-index: 20; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -50,11 +45,11 @@
 <body class="antialiased selection:bg-blue-600 selection:text-white">
 
     <!-- NAVBAR -->
-    <nav class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800" role="navigation" aria-label="Main navigation">
+    <nav class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="navegar('home')" data-qa="logo" aria-label="Ir al inicio">
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="navegar('home')" data-qa="logo">
                     <div class="w-10 h-10 bg-blue-600 rounded flex items-center justify-center">
                         <i data-lucide="music" class="text-white w-6 h-6"></i>
                     </div>
@@ -62,20 +57,20 @@
                 </div>
 
                 <!-- Menú -->
-                <div class="hidden md:block" role="menubar">
+                <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <button data-qa="nav-home" onclick="navegar('home')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" role="menuitem">Inicio</button>
-                        <button data-qa="nav-catalogo" onclick="navegar('catalogo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" role="menuitem">Catálogo</button>
-                        <button data-qa="nav-estudio" onclick="navegar('estudio')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" role="menuitem">Estudio</button>
-                        <button data-qa="nav-vivo" onclick="navegar('vivo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800" role="menuitem">PA & Vivo</button>
+                        <button data-qa="nav-home" onclick="navegar('home')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Inicio</button>
+                        <button data-qa="nav-catalogo" onclick="navegar('catalogo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Catálogo</button>
+                        <button data-qa="nav-estudio" onclick="navegar('estudio')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">Estudio</button>
+                        <button data-qa="nav-vivo" onclick="navegar('vivo')" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition-colors text-slate-300 hover:text-white hover:bg-slate-800">PA & Vivo</button>
                     </div>
                 </div>
 
                 <!-- Carrito Botón -->
                 <div class="flex items-center gap-4">
-                    <button data-qa="cart-button" onclick="toggleCart(true)" class="relative p-2 text-slate-300 hover:text-blue-400 transition-colors group" aria-label="Abrir carrito" aria-haspopup="dialog">
+                    <button data-qa="cart-button" onclick="toggleCart(true)" class="relative p-2 text-slate-300 hover:text-blue-400 transition-colors group">
                         <i data-lucide="shopping-cart" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
-                        <!-- Badge se inserta dinámicamente -->
+                        <!-- El Badge se inyecta aquí dinámicamente via JS -->
                     </button>
                 </div>
             </div>
@@ -86,25 +81,24 @@
     <div id="main-content" data-qa="main-content"></div>
 
     <!-- FOOTER -->
-    <footer class="bg-slate-950 border-t border-slate-800 mt-auto py-12" role="contentinfo">
+    <footer class="bg-slate-950 border-t border-slate-800 mt-auto py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
             <div class="mb-4 md:mb-0">
                 <span class="font-bold text-xl tracking-wider text-slate-50">SOUND<span class="text-blue-600">EMPIRE</span></span>
                 <p class="text-slate-500 text-sm mt-2">© 2025 SoundEmpire Audio.</p>
             </div>
+            <div class="flex space-x-6 text-slate-400"><p class="text-xs">Pagos Seguros</p></div>
         </div>
     </footer>
 
     <!-- OVERLAY CARRITO -->
-    <div id="cart-overlay" class="fixed inset-0 z-50 hidden" aria-hidden="true" role="dialog" aria-label="Carrito de compras" data-qa="cart-overlay">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity cursor-pointer" onclick="toggleCart(false)"></div>
+    <div id="cart-overlay" class="fixed inset-0 z-50 hidden" data-qa="cart-overlay">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity" onclick="toggleCart(false)"></div>
         <div class="fixed inset-y-0 right-0 max-w-full flex">
             <div class="w-screen max-w-md bg-slate-900 border-l border-slate-700 shadow-2xl flex flex-col h-full slide-in-right">
                 <div class="px-4 sm:px-6 py-6 flex items-start justify-between border-b border-slate-800">
                     <h2 class="text-xl font-bold text-white">Carro de Compras</h2>
-                    <button data-qa="cart-close" onclick="toggleCart(false)" class="text-slate-400 hover:text-white" aria-label="Cerrar carrito">
-                        <i data-lucide="x" class="w-6 h-6"></i>
-                    </button>
+                    <button data-qa="cart-close" onclick="toggleCart(false)" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
                 </div>
                 <div class="flex-1 py-6 overflow-y-auto px-4 sm:px-6 no-scrollbar" id="cart-items-container" data-qa="cart-items-container"></div>
                 <div id="cart-footer" class="border-t border-slate-800 py-6 px-4 sm:px-6 bg-slate-800 hidden" data-qa="cart-footer">
@@ -112,8 +106,8 @@
                         <p>Subtotal</p>
                         <p id="cart-total" data-qa="cart-total">$0</p>
                     </div>
-                    <button data-qa="start-checkout" onclick="iniciarCheckout()" class="w-full flex justify-center items-center px-6 py-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all">
-                        Pagar Ahora
+                    <button data-qa="start-checkout" onclick="iniciarCheckout()" class="w-full flex justify-center items-center px-6 py-4 border border-transparent rounded-lg shadow-lg text-base font-bold text-white bg-blue-600 hover:bg-blue-700 transition-all hover:scale-[1.02]">
+                        Pagar con Flow / MercadoPago
                     </button>
                 </div>
             </div>
@@ -121,44 +115,40 @@
     </div>
 
     <!-- MODAL PAGO -->
-    <div id="payment-modal" class="fixed inset-0 z-[60] overflow-y-auto hidden" aria-hidden="true" role="dialog" aria-labelledby="modal-title" data-qa="payment-modal">
+    <div id="payment-modal" class="fixed inset-0 z-[60] overflow-y-auto hidden" data-qa="payment-modal">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-black/90 transition-opacity" onclick="cerrarModalPago()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
             <div class="inline-block align-bottom bg-slate-800 rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full border border-slate-700">
-                
                 <div id="payment-content" data-qa="payment-content">
                     <div class="bg-slate-800 px-4 pt-5 pb-4 sm:p-6">
-                        <h3 class="text-lg leading-6 font-bold text-white mb-4" id="modal-title">Finalizar Compra</h3>
-                        
-                        <!-- Opciones Pago -->
-                        <div onclick="seleccionarMetodo('flow')" id="method-flow" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between mb-3 hover:bg-slate-700/30" data-qa="payment-flow" role="button" aria-pressed="false">
+                        <h3 class="text-lg font-bold text-white mb-4">Finalizar Compra Segura</h3>
+                        <!-- Flow -->
+                        <div onclick="seleccionarMetodo('flow')" id="method-flow" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between hover:bg-slate-700/30 transition-all mb-3" data-qa="payment-flow">
                             <div class="flex items-center">
-                                <div class="h-10 w-16 bg-white rounded flex items-center justify-center mr-4"><span class="text-blue-900 font-bold italic">flow</span></div>
+                                <div class="h-10 w-16 bg-white rounded flex items-center justify-center mr-4"><span class="text-blue-900 font-black italic">flow</span></div>
                                 <span class="font-bold text-white">Flow Pagos</span>
                             </div>
                             <div class="check-circle hidden h-5 w-5 bg-blue-500 rounded-full items-center justify-center"><i data-lucide="check" class="w-3 h-3 text-white"></i></div>
                         </div>
-
-                        <div onclick="seleccionarMetodo('mercadopago')" id="method-mercadopago" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between hover:bg-slate-700/30" data-qa="payment-mercadopago" role="button" aria-pressed="false">
+                        <!-- MercadoPago -->
+                        <div onclick="seleccionarMetodo('mercadopago')" id="method-mercadopago" class="payment-option relative rounded-lg border border-slate-600 p-4 cursor-pointer flex items-center justify-between hover:bg-slate-700/30 transition-all" data-qa="payment-mercadopago">
                             <div class="flex items-center">
-                                <div class="h-10 w-16 bg-yellow-500 rounded flex items-center justify-center mr-4"><span class="text-slate-900 font-bold text-xs">MP</span></div>
+                                <div class="h-10 w-16 bg-blue-500 rounded flex items-center justify-center mr-4"><span class="text-white font-bold text-xs">MP</span></div>
                                 <span class="font-bold text-white">Mercado Pago</span>
                             </div>
                             <div class="check-circle hidden h-5 w-5 bg-blue-500 rounded-full items-center justify-center"><i data-lucide="check" class="w-3 h-3 text-white"></i></div>
                         </div>
-
-                        <div class="mt-6 flex justify-between items-center">
+                        <div class="mt-6 flex justify-between items-center bg-slate-900 p-4 rounded">
                             <span class="text-slate-400">Total:</span>
                             <span class="text-xl font-bold text-white" id="modal-total" data-qa="modal-total">$0</span>
                         </div>
                     </div>
                     <div class="bg-slate-700/30 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-slate-700">
-                        <button type="button" id="btn-pay-now" disabled onclick="procesarPago()" class="w-full inline-flex justify-center rounded-lg border border-transparent px-4 py-2 text-base font-bold text-white bg-slate-600 cursor-not-allowed opacity-50 sm:ml-3 sm:w-auto sm:text-sm transition-all" data-qa="btn-pay-now" aria-disabled="true">Pagar</button>
-                        <button type="button" onclick="cerrarModalPago()" class="mt-3 w-full inline-flex justify-center rounded-lg border border-slate-600 px-4 py-2 bg-transparent text-base font-medium text-slate-300 hover:bg-slate-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" data-qa="btn-cancel-pay">Cancelar</button>
+                        <button type="button" id="btn-pay-now" disabled onclick="procesarPago()" data-qa="btn-pay-now" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 text-base font-bold text-white bg-slate-600 cursor-not-allowed opacity-50 sm:ml-3 sm:w-auto sm:text-sm transition-all">Pagar Ahora</button>
+                        <button type="button" onclick="cerrarModalPago()" class="mt-3 w-full inline-flex justify-center rounded-lg border border-slate-600 shadow-sm px-4 py-2 bg-transparent text-base font-medium text-slate-300 hover:bg-slate-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Cancelar</button>
                     </div>
                 </div>
-
                 <div id="payment-loading" class="hidden p-12 flex-col items-center justify-center text-center" data-qa="payment-loading">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
                     <p class="text-white font-bold">Procesando...</p>
@@ -168,48 +158,47 @@
     </div>
 
     <!-- PANTALLA ÉXITO -->
-    <div id="success-screen" class="fixed inset-0 z-[70] bg-slate-900 hidden items-center justify-center px-4 fade-in" data-qa="success-screen" role="status" aria-live="polite">
-        <div class="max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-green-500/30 shadow-2xl text-center">
+    <div id="success-screen" class="fixed inset-0 z-[70] bg-slate-900 hidden items-center justify-center px-4 fade-in" data-qa="success-screen">
+        <div class="max-w-md w-full bg-slate-800 rounded-2xl p-8 border border-green-500/30 shadow-2xl text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-green-500 to-blue-500"></div>
             <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-900/30 mb-6 border-2 border-green-500/50">
                 <i data-lucide="shield-check" class="h-10 w-10 text-green-400"></i>
             </div>
             <h2 class="text-3xl font-extrabold text-white mb-2">¡Pago Exitoso!</h2>
-            <p class="text-slate-400 mb-8">Confirmado vía <span id="success-method" class="text-blue-400 font-bold capitalize" data-qa="success-method"></span>.</p>
-            <button onclick="resetApp()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg shadow-lg" data-qa="btn-back-store">Volver a la Tienda</button>
+            <p class="text-slate-400 mb-8">Orden confirmada con <span id="success-method" class="text-blue-400 font-bold capitalize" data-qa="success-method"></span>.</p>
+            <button onclick="resetApp()" data-qa="btn-back-store" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg">Volver a la Tienda</button>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LÓGICA -->
+    <!-- JAVASCRIPT -->
     <script>
         const PRODUCTOS = [
-            { id: 1, nombre: "Neumann U87 Ai Studio Set", categoria: "Microfonos", grupo: "Estudio", precio: 3290000, imagen: "https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&w=800", descripcion: "Estándar de estudio.", specs: ["Multi-patrón"], stock: 5 },
-            { id: 2, nombre: "Solid State Logic SSL SiX", categoria: "Consolas", grupo: "PA & Vivo", precio: 1850000, imagen: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?auto=format&fit=crop&w=800", descripcion: "Compresión analógica.", specs: ["6 Canales"], stock: 3 },
-            { id: 3, nombre: "Adam Audio A7V (Par)", categoria: "Monitores", grupo: "Estudio", precio: 1450000, imagen: "https://images.unsplash.com/photo-1519508234439-4f23643125c1?auto=format&fit=crop&w=800", descripcion: "Tweeter X-ART.", specs: ["Woofer 7\""], stock: 8 },
-            { id: 4, nombre: "Universal Audio Apollo Twin X", categoria: "Interfaces", grupo: "Estudio", precio: 990000, imagen: "https://images.unsplash.com/photo-1519683109079-d5f539e1542f?auto=format&fit=crop&w=800", descripcion: "Procesamiento UAD.", specs: ["Thunderbolt 3"], stock: 12 },
-            { id: 5, nombre: "Shure SM7B", categoria: "Microfonos", grupo: "Estudio", precio: 450000, imagen: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?auto=format&fit=crop&w=800", descripcion: "Vocal legendary.", specs: ["Dinámico"], stock: 20 },
-            { id: 6, nombre: "Moog Sub 37", categoria: "Sintetizadores", grupo: "PA & Vivo", precio: 1950000, imagen: "https://images.unsplash.com/photo-1615234427523-68d6890665e5?auto=format&fit=crop&w=800", descripcion: "Parafónico analógico.", specs: ["37 Teclas"], stock: 2 },
-            { id: 7, nombre: "Sennheiser HD 650", categoria: "Audifonos", grupo: "Estudio", precio: 380000, imagen: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800", descripcion: "Referencia abierta.", specs: ["300 Ohms"], stock: 15 },
-            { id: 8, nombre: "Korg Kronos 2 88", categoria: "Teclados", grupo: "PA & Vivo", precio: 3100000, imagen: "https://images.unsplash.com/photo-1551819261-302d27303187?auto=format&fit=crop&w=800", descripcion: "Workstation.", specs: ["88 Teclas"], stock: 1 }
+            { id: 1, nombre: "Neumann U87 Ai Studio Set", categoria: "Microfonos", grupo: "Estudio", precio: 3290000, imagen: "https://images.unsplash.com/photo-1485579149621-3123dd979885?q=80&w=800&auto=format&fit=crop", descripcion: "El estándar de oro.", specs: ["Multi-patrón"], stock: 5 },
+            { id: 2, nombre: "Solid State Logic SSL SiX", categoria: "Consolas", grupo: "PA & Vivo", precio: 1850000, imagen: "https://images.unsplash.com/photo-1598653222000-6b7b7a552625?q=80&w=800&auto=format&fit=crop", descripcion: "Compresión analógica.", specs: ["6 Canales"], stock: 3 },
+            { id: 3, nombre: "Adam Audio A7V (Par)", categoria: "Monitores", grupo: "Estudio", precio: 1450000, imagen: "https://images.unsplash.com/photo-1519508234439-4f23643125c1?q=80&w=800&auto=format&fit=crop", descripcion: "Tweeter X-ART.", specs: ["Woofer 7\""], stock: 8 },
+            { id: 4, nombre: "Universal Audio Apollo Twin X", categoria: "Interfaces", grupo: "Estudio", precio: 990000, imagen: "https://images.unsplash.com/photo-1519683109079-d5f539e1542f?q=80&w=800&auto=format&fit=crop", descripcion: "Procesamiento UAD.", specs: ["Thunderbolt 3"], stock: 12 },
+            { id: 5, nombre: "Shure SM7B Vocal Mic", categoria: "Microfonos", grupo: "Estudio", precio: 450000, imagen: "https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?q=80&w=800&auto=format&fit=crop", descripcion: "Legendario para podcast.", specs: ["Dinámico"], stock: 20 },
+            { id: 6, nombre: "Moog Sub 37 Analog Synth", categoria: "Sintetizadores", grupo: "PA & Vivo", precio: 1950000, imagen: "https://images.unsplash.com/photo-1615234427523-68d6890665e5?q=80&w=800&auto=format&fit=crop", descripcion: "Sintetizador parafónico.", specs: ["37 Teclas"], stock: 2 },
+            { id: 7, nombre: "Sennheiser HD 650", categoria: "Audifonos", grupo: "Estudio", precio: 380000, imagen: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop", descripcion: "Referencia abierta.", specs: ["300 Ohms"], stock: 15 },
+            { id: 8, nombre: "Korg Kronos 2 88", categoria: "Teclados", grupo: "PA & Vivo", precio: 3100000, imagen: "https://images.unsplash.com/photo-1551819261-302d27303187?q=80&w=800&auto=format&fit=crop", descripcion: "Workstation definitiva.", specs: ["88 Teclas"], stock: 1 }
         ];
 
         let cart = [];
         let currentView = 'home';
         let selectedMethod = null;
         let heroInterval = null;
-
         const formatCLP = (amount) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(amount);
 
         function navegar(vista, productId = null) {
             currentView = vista;
-            // FIX QA: Limpiar intervalo para evitar loops fantasma
+            // FIX: Limpieza del slider
             if (heroInterval) { clearInterval(heroInterval); heroInterval = null; }
 
             const container = document.getElementById('main-content');
             window.scrollTo(0, 0);
-            
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('text-blue-400', 'bg-slate-800');
-                if(btn.innerText.toLowerCase().includes(vista) || (vista === 'home' && btn.innerText === 'Inicio')) {
+                if((btn.innerText||'').toLowerCase().includes(vista) || (vista === 'home' && btn.innerText === 'Inicio')) {
                     btn.classList.add('text-blue-400', 'bg-slate-800');
                 }
             });
@@ -223,23 +212,14 @@
 
         function renderHome(container) {
             const slides = [
-                { img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=2070", title: "Sonido Profesional", desc: "High-End Audio." },
-                { img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=2070", title: "Tu Estudio", desc: "Mejora tu setup." }
+                { img: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop", title: "Sonido Profesional", desc: "High-End Audio." },
+                { img: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop", title: "Tu Estudio", desc: "Mejora tu setup." }
             ];
-
-            const slidesHTML = slides.map((slide, index) => `
-                <div class="hero-slide ${index === 0 ? 'active' : ''}" id="slide-${index}" data-qa="hero-slide-${index}">
-                    <div class="absolute inset-0"><img class="w-full h-full object-cover opacity-40" src="${slide.img}"></div>
-                    <div class="relative max-w-7xl mx-auto py-24 px-4 h-full flex items-center hero-content is-animating">
-                        <div>
-                            <h1 class="text-4xl font-extrabold text-white sm:text-6xl animate-fade-in-up">${slide.title}</h1>
-                            <p class="mt-6 text-xl text-slate-300 animate-fade-in-up">${slide.desc}</p>
-                            <div class="mt-10 animate-fade-in-up"><button data-qa="hero-cta" onclick="navegar('catalogo')" class="px-8 py-3 rounded-md bg-blue-600 text-white font-medium hover:bg-blue-700">Ver Catálogo</button></div>
-                        </div>
-                    </div>
-                </div>
+            // Slider simplificado para evitar complejidad
+            const slidesHTML = slides.map((slide, i) => `
+                <div class="hero-slide ${i===0?'active':''}" id="slide-${i}"><img class="w-full h-full object-cover opacity-30" src="${slide.img}"><div class="relative max-w-7xl mx-auto py-24 px-4"><h1 class="text-4xl text-white font-bold">${slide.title}</h1><div class="mt-10"><button data-qa="hero-cta" onclick="navegar('catalogo')" class="px-8 py-4 bg-blue-600 text-white rounded hover:bg-blue-700">Ver Catálogo</button></div></div></div>
             `).join('');
-
+            
             container.innerHTML = `
                 <div class="relative bg-slate-900 overflow-hidden mb-12 h-[500px] fade-in" data-qa="hero">${slidesHTML}</div>
                 <main class="max-w-7xl mx-auto px-4 py-12">
@@ -247,15 +227,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" data-qa="featured-grid">${PRODUCTOS.slice(0,4).map(p => cardHTML(p)).join('')}</div>
                 </main>
             `;
-            
-            initSlider(slides.length);
-        }
-
-        function initSlider(total) {
+            // Iniciar slider simple
             let current = 0;
             heroInterval = setInterval(() => {
                 document.getElementById(`slide-${current}`)?.classList.remove('active');
-                current = (current + 1) % total;
+                current = (current + 1) % slides.length;
                 document.getElementById(`slide-${current}`)?.classList.add('active');
             }, 5000);
         }
@@ -265,7 +241,6 @@
             let titulo = "Catálogo Completo";
             if (filtro === 'estudio') { items = PRODUCTOS.filter(p => p.grupo === 'Estudio'); titulo = "Equipamiento de Estudio"; }
             if (filtro === 'vivo') { items = PRODUCTOS.filter(p => p.grupo === 'PA & Vivo'); titulo = "Sonido en Vivo & PA"; }
-
             container.innerHTML = `
                 <main class="max-w-7xl mx-auto px-4 py-12 fade-in" data-qa="catalog-main">
                     <div class="mb-8 pb-4 border-b border-slate-800"><h2 class="text-3xl font-bold text-white">${titulo}</h2></div>
@@ -280,13 +255,13 @@
                 <div class="max-w-7xl mx-auto px-4 py-12 fade-in" data-qa="product-detail-${p.id}">
                     <button onclick="navegar('catalogo')" class="flex items-center text-slate-400 mb-8" data-qa="detail-back"><i data-lucide="arrow-left" class="w-5 h-5 mr-2"></i> Volver</button>
                     <div class="lg:grid lg:grid-cols-2 lg:gap-12">
-                        <div class="bg-slate-800 rounded-2xl overflow-hidden mb-8"><img src="${p.imagen}" class="w-full h-full object-cover"></div>
+                        <div class="bg-slate-800 rounded-2xl overflow-hidden mb-8 lg:mb-0"><img src="${p.imagen}" class="w-full h-full object-cover"></div>
                         <div>
-                            <h1 class="text-3xl font-bold text-white mb-4" data-qa="product-name-${p.id}">${p.nombre}</h1>
+                            <h1 class="text-3xl font-bold text-white mb-4">${p.nombre}</h1>
                             <p class="text-lg text-slate-300 mb-8">${p.descripcion}</p>
                             <div class="bg-slate-800 p-6 rounded-xl">
                                 <p class="text-3xl font-bold text-white mb-6">${formatCLP(p.precio)}</p>
-                                <button data-qa="add-to-cart-detail-${p.id}" onclick="addToCart(${p.id})" class="w-full bg-blue-600 py-4 rounded-lg text-white font-bold hover:bg-blue-700">Agregar al Carro</button>
+                                <button data-qa="add-to-cart-detail" onclick="addToCart(${p.id})" class="w-full bg-blue-600 py-4 rounded-lg text-white font-bold hover:bg-blue-700">Agregar al Carro</button>
                             </div>
                         </div>
                     </div>
@@ -296,16 +271,16 @@
 
         function cardHTML(p) {
             return `
-                <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all flex flex-col" data-qa="product-card" data-product-id="${p.id}">
-                    <div class="h-64 bg-slate-900 relative cursor-pointer" onclick="navegar('detalle', ${p.id})">
+                <div class="bg-slate-800 rounded-xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all flex flex-col h-full" data-qa="product-card" data-product-id="${p.id}">
+                    <div class="h-64 bg-slate-900 cursor-pointer relative" onclick="navegar('detalle', ${p.id})">
                         <img src="${p.imagen}" class="w-full h-full object-cover hover:scale-110 transition-transform">
                         <div class="absolute top-2 right-2 bg-slate-900/90 px-2 py-1 rounded text-xs text-blue-400 border border-slate-700">${p.categoria}</div>
                     </div>
-                    <div class="p-4 flex flex-col flex-grow">
+                    <div class="p-6 flex flex-col flex-grow">
                         <h3 class="text-lg font-bold text-white truncate cursor-pointer" onclick="navegar('detalle', ${p.id})" data-qa="product-name-${p.id}">${p.nombre}</h3>
                         <div class="mt-auto pt-4 flex justify-between items-center">
-                            <span class="text-lg font-bold text-blue-400">${formatCLP(p.precio)}</span>
-                            <button data-qa="add-to-cart-${p.id}" onclick="addToCart(${p.id})" class="bg-slate-700 px-3 py-2 rounded text-sm text-white hover:bg-blue-600">Agregar</button>
+                            <span class="text-xl font-bold text-blue-400">${formatCLP(p.precio)}</span>
+                            <button data-qa="add-to-cart-${p.id}" onclick="addToCart(${p.id})" class="bg-slate-700 px-4 py-2 rounded text-sm text-white hover:bg-blue-600">Agregar</button>
                         </div>
                     </div>
                 </div>
@@ -338,10 +313,9 @@
             const count = cart.reduce((a, b) => a + b.qty, 0);
             const total = cart.reduce((a, b) => a + (b.precio * b.qty), 0);
             
-            // FIX QA: Lógica de eliminado real para Cypress
+            // FIX: ELIMINAR BADGE SI NO HAY ITEMS (Para que Cypress .should('not.exist') funcione)
             let badge = document.getElementById('cart-badge');
             const btnContainer = document.querySelector('[data-qa="cart-button"]');
-
             if (count > 0) {
                 if (!badge) {
                     badge = document.createElement('span');
@@ -359,25 +333,24 @@
             const footer = document.getElementById('cart-footer');
             
             if (cart.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-slate-500"><i data-lucide="shopping-cart" class="w-12 h-12 mx-auto mb-4 opacity-50"></i><p>Carro vacío</p></div>`;
+                container.innerHTML = `<div class="text-center py-12 text-slate-500"><i data-lucide="shopping-cart" class="w-12 h-12 mx-auto mb-4 opacity-50"></i><p>Tu carro está vacío</p></div>`;
                 footer.classList.add('hidden');
             } else {
-                container.innerHTML = `<ul class="divide-y divide-slate-700">` + cart.map(item => `
-                    <li class="py-4 flex" data-qa="cart-item" data-product-id="${item.id}">
-                        <img src="${item.imagen}" class="h-16 w-16 rounded border border-slate-700 object-cover">
+                container.innerHTML = `<ul class="-my-6 divide-y divide-slate-700">` + cart.map(item => `
+                    <li class="py-6 flex" data-qa="cart-item" data-product-id="${item.id}">
+                        <img src="${item.imagen}" class="h-20 w-20 rounded border border-slate-700 object-cover">
                         <div class="ml-4 flex-1">
-                            <div class="flex justify-between text-white"><h3 data-qa="cart-item-name-${item.id}">${item.nombre}</h3><p class="text-blue-400">${formatCLP(item.precio * item.qty)}</p></div>
+                            <div class="flex justify-between text-white"><h3>${item.nombre}</h3><p class="text-blue-400">${formatCLP(item.precio * item.qty)}</p></div>
                             <div class="flex justify-between items-center mt-2">
-                                <div class="flex items-center border border-slate-700 rounded bg-slate-800 text-sm">
+                                <div class="flex items-center border border-slate-700 rounded bg-slate-800">
                                     <button data-qa="cart-decrease-${item.id}" onclick="updateQty(${item.id}, -1)" class="p-1 px-2 hover:text-blue-400">-</button>
                                     <span class="px-2 text-white" data-qa="cart-qty-${item.id}">${item.qty}</span>
                                     <button data-qa="cart-increase-${item.id}" onclick="updateQty(${item.id}, 1)" class="p-1 px-2 hover:text-blue-400">+</button>
                                 </div>
-                                <button data-qa="cart-remove-${item.id}" onclick="removeFromCart(${item.id})" class="text-red-400 text-xs hover:text-red-300">Eliminar</button>
+                                <button data-qa="cart-remove-${item.id}" onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-300 text-xs">Eliminar</button>
                             </div>
                         </div>
-                    </li>
-                `).join('') + `</ul>`;
+                    </li>`).join('') + `</ul>`;
                 document.getElementById('cart-total').innerText = formatCLP(total);
                 footer.classList.remove('hidden');
             }
@@ -386,20 +359,13 @@
 
         function toggleCart(show) {
             const overlay = document.getElementById('cart-overlay');
-            if (show) {
-                overlay.classList.remove('hidden');
-                overlay.setAttribute('aria-hidden', 'false');
-            } else {
-                overlay.classList.add('hidden');
-                overlay.setAttribute('aria-hidden', 'true');
-            }
+            if (show) overlay.classList.remove('hidden'); else overlay.classList.add('hidden');
         }
 
         function iniciarCheckout() {
             toggleCart(false);
-            document.getElementById('modal-total').innerText = formatCLP(cart.reduce((a,b)=>a+(b.precio*b.qty),0));
+            document.getElementById('modal-total').innerText = formatCLP(cart.reduce((a, b) => a + (b.precio * b.qty), 0));
             document.getElementById('payment-modal').classList.remove('hidden');
-            document.getElementById('payment-modal').setAttribute('aria-hidden', 'false');
             document.getElementById('payment-content').classList.remove('hidden');
             document.getElementById('payment-loading').classList.add('hidden');
             document.getElementById('payment-loading').classList.remove('flex');
@@ -407,9 +373,8 @@
             document.getElementById('btn-pay-now').classList.add('opacity-50', 'cursor-not-allowed');
             selectedMethod = null;
             document.querySelectorAll('.payment-option').forEach(el => {
-                 el.classList.remove('border-blue-500', 'bg-blue-900/20');
-                 el.querySelector('.check-circle').classList.add('hidden');
-                 el.setAttribute('aria-pressed', 'false');
+                el.classList.remove('border-blue-500', 'bg-blue-900/20');
+                el.querySelector('.check-circle').classList.add('hidden');
             });
         }
 
@@ -418,23 +383,17 @@
             document.querySelectorAll('.payment-option').forEach(el => {
                 el.classList.remove('border-blue-500', 'bg-blue-900/20');
                 el.querySelector('.check-circle').classList.add('hidden');
-                el.setAttribute('aria-pressed', 'false');
             });
             const active = document.getElementById(`method-${metodo}`);
             active.classList.add('border-blue-500', 'bg-blue-900/20');
             active.querySelector('.check-circle').classList.remove('hidden');
-            active.querySelector('.check-circle').classList.add('flex'); // Añadido flex para mostrar icono
-            active.setAttribute('aria-pressed', 'true');
+            active.querySelector('.check-circle').classList.add('flex');
             const btn = document.getElementById('btn-pay-now');
             btn.disabled = false;
             btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
         }
 
-        function cerrarModalPago() { 
-            document.getElementById('payment-modal').classList.add('hidden');
-            document.getElementById('payment-modal').setAttribute('aria-hidden', 'true');
-        }
+        function cerrarModalPago() { document.getElementById('payment-modal').classList.add('hidden'); }
 
         function procesarPago() {
             if (!selectedMethod) return;
@@ -443,13 +402,13 @@
             loading.classList.remove('hidden');
             loading.classList.add('flex');
 
-            // FIX QA: Timeout ajustado
+            // FIX: Timeout de simulación
             setTimeout(() => {
                 document.getElementById('payment-modal').classList.add('hidden');
-                document.getElementById('success-method').innerText = selectedMethod === 'mercadopago' ? 'Mercado Pago' : 'Flow Pagos';
+                document.getElementById('success-method').innerText = selectedMethod;
                 const success = document.getElementById('success-screen');
                 success.classList.remove('hidden');
-                success.classList.add('flex');
+                // IMPORTANTE: Quitar flex al cerrar
                 cart = [];
                 updateCartUI();
             }, 1500);
@@ -458,19 +417,13 @@
         function resetApp() {
             const success = document.getElementById('success-screen');
             success.classList.add('hidden');
-            success.classList.remove('flex');
             navegar('home');
         }
-
-        // --- UTILS PARA QA AUTOMATION ---
+        
+        // Herramientas para QA (Grey Box Testing)
         window.QA = {
             getCart: () => JSON.parse(JSON.stringify(cart)),
-            getView: () => currentView,
-            clearCart: () => { cart = []; updateCartUI(); return true; },
-            setCart: (newCart) => { if (Array.isArray(newCart)) { cart = JSON.parse(JSON.stringify(newCart)); updateCartUI(); return true; } return false; },
-            navigateTo: (vista, productId = null) => { navegar(vista, productId); return true; },
-            selectPaymentMethod: (method) => { seleccionarMetodo(method); return true; },
-            pressPayNow: () => { procesarPago(); return true; }
+            clearCart: () => { cart = []; updateCartUI(); return true; }
         };
 
         window.onload = () => navegar('home');
