@@ -1,3 +1,69 @@
+
+$(document).ready(function () {
+
+    // Clic genérico para cualquier elemento con clase "accion"
+    $(".accion").on("click", function () {
+        console.log("Acción ejecutada");
+    });
+
+    // Mostrar/Ocultar algo (cuando exista)
+    $(".toggle").on("click", function () {
+        $(".contenido").toggle();
+    });
+
+    // Validación mínima sin saber campos
+    $("form").on("submit", function (e) {
+        console.log("Formulario enviado");
+    });
+});
+        // --- DATOS ---
+        const PRODUCTOS = [
+            { id: 1, nombre: "Neumann U87 Ai Studio Set", categoria: "Microfonos", grupo: "Estudio", precio: 3290000, imagen: "./ASSETS/IMG/NeumannU87.jpeg", descripcion: "El estándar de oro para estudios de grabación.", specs: ["Patrón: Multi-patrón", "Rango: 20Hz-20kHz"], stock: 5 },
+            { id: 2, nombre: "Solid State Logic SSL SiX", categoria: "Consolas", grupo: "PA & Vivo", precio: 1850000, imagen: "./ASSETS/IMG/LogicSSL.jpeg", descripcion: "Compresión de bus SSL en formato escritorio.", specs: ["6 Canales", "SuperAnalogue Preamps"], stock: 3 },
+            { id: 3, nombre: "Adam Audio A7V (Par)", categoria: "Monitores", grupo: "Estudio", precio: 1450000, imagen: "./ASSETS/IMG/AdamA7V.jpeg", descripcion: "Precisión alemana con tweeter X-ART.", specs: ["Woofer 7\"", "Tweeter Cinta"], stock: 8 },
+            { id: 4, nombre: "Universal Audio Apollo Twin X", categoria: "Interfaces", grupo: "Estudio", precio: 990000, imagen: "./ASSETS/IMG/ApolloTwinX.jpeg", descripcion: "Procesamiento UAD en tiempo real.", specs: ["Thunderbolt 3", "2 Unison Preamps"], stock: 12 },
+            { id: 5, nombre: "Shure SM7B Vocal Mic", categoria: "Microfonos", grupo: "Estudio", precio: 450000, imagen: "./ASSETS/IMG/ShureSM7B.jpeg", descripcion: "Legendario para podcast y voces rock.", specs: ["Dinámico Cardioide", "Shielding interno"], stock: 20 },
+            { id: 6, nombre: "Moog Sub 37 Analog Synth", categoria: "Sintetizadores", grupo: "PA & Vivo", precio: 1950000, imagen: "./ASSETS/IMG/sub37.jpg", descripcion: "Sintetizador parafónico analógico.", specs: ["37 Teclas", "Duo Mode"], stock: 2 },
+            { id: 7, nombre: "Sennheiser HD 650", categoria: "Audifonos", grupo: "Estudio", precio: 380000, imagen: "./ASSETS/IMG/SH650.JPEG", descripcion: "Referencia abierta para mezcla.", specs: ["300 Ohms", "Open Back"], stock: 15 },
+            { id: 8, nombre: "Korg Kronos 2 88", categoria: "Teclados", grupo: "PA & Vivo", precio: 3100000, imagen: "./ASSETS/IMG/kronos.jpg", descripcion: "Workstation definitiva.", specs: ["9 Motores Sonido", "88 Teclas Hammer"], stock: 1 }
+        ];
+
+        // --- ESTADO ---
+        let cart = [];
+        let currentView = 'home';
+        let selectedMethod = null;
+        let heroInterval = null; // Variable para controlar el slider
+
+        // --- UTILIDADES ---
+        const formatCLP = (amount) => new Intl.NumberFormat('es-CL', { style: 'currency', currency: 'CLP' }).format(amount);
+
+        // --- RENDERIZADO PRINCIPAL ---
+        function navegar(vista, productId = null) {
+            currentView = vista;
+            
+            // Limpiar intervalo del slider si salimos del home
+            if (heroInterval) {
+                clearInterval(heroInterval);
+                heroInterval = null;
+            }
+
+            const container = document.getElementById('main-content');
+            window.scrollTo(0, 0);
+
+            // Actualizar estilos navbar active
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-blue-400', 'bg-slate-800');
+                if(btn.innerText.toLowerCase().includes(vista) || (vista === 'home' && btn.innerText === 'Inicio')) {
+                    btn.classList.add('text-blue-400', 'bg-slate-800');
+                }
+            });
+
+            // Router simple
+            if (vista === 'home') renderHome(container);
+            else if (vista === 'detalle') renderDetalle(container, productId);
+            else renderCatalogo(container, vista);
+            
+            lucide.createIcons();
 // --- DATOS ---
 const PRODUCTOS = [
     { id: 1, nombre: "Neumann U87 Ai Studio Set", categoria: "Microfonos", grupo: "Estudio", precio: 3290000, imagen: "./ASSETS/IMG/NeumannU87.jpeg", descripcion: "El estándar de oro para estudios de grabación.", specs: ["Patrón: Multi-patrón", "Rango: 20Hz-20kHz"], stock: 5 },
@@ -392,6 +458,122 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             btnTop.classList.add("hidden");
         }
+
+        function removeFromCart(id) {
+            cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((a, b) => a + b.qty, 0);
+            const total = cart.reduce((a, b) => a + (b.precio * b.qty), 0);
+            
+            // Badge Navbar
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = count;
+            badge.classList.toggle('hidden', count === 0);
+
+            // Items Lista
+            const container = document.getElementById('cart-items-container');
+            const footer = document.getElementById('cart-footer');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-500"><i data-lucide="shopping-cart" class="w-12 h-12 mx-auto mb-4 opacity-50"></i><p>Tu carro está vacío</p></div>`;
+                footer.classList.add('hidden');
+            } else {
+                container.innerHTML = `<ul class="-my-6 divide-y divide-slate-700">` + cart.map(item => `
+                    <li class="py-6 flex">
+                        <div class="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border border-slate-700"><img src="${item.imagen}" class="h-full w-full object-cover"></div>
+                        <div class="ml-4 flex flex-1 flex-col">
+                            <div><div class="flex justify-between text-base font-medium text-white"><h3>${item.nombre}</h3><p class="ml-4 text-blue-400">${formatCLP(item.precio * item.qty)}</p></div></div>
+                            <div class="flex flex-1 items-end justify-between text-sm">
+                                <div class="flex items-center border border-slate-700 rounded bg-slate-800">
+                                    <button onclick="updateQty(${item.id}, -1)" class="p-1 hover:text-blue-400"><i data-lucide="minus" class="w-3 h-3"></i></button>
+                                    <span class="px-2 text-white">${item.qty}</span>
+                                    <button onclick="updateQty(${item.id}, 1)" class="p-1 hover:text-blue-400"><i data-lucide="plus" class="w-3 h-3"></i></button>
+                                </div>
+                                <button onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-300 flex items-center"><i data-lucide="trash-2" class="w-3 h-3 mr-1"></i> Eliminar</button>
+                            </div>
+                        </div>
+                    </li>
+                `).join('') + `</ul>`;
+                
+                document.getElementById('cart-total').innerText = formatCLP(total);
+                footer.classList.remove('hidden');
+            }
+            lucide.createIcons();
+        }
+
+        function toggleCart(show) {
+            const overlay = document.getElementById('cart-overlay');
+            if (show) overlay.classList.remove('hidden');
+            else overlay.classList.add('hidden');
+        }
+
+        // --- LÓGICA PAGO ---
+        function iniciarCheckout() {
+            toggleCart(false);
+            const total = cart.reduce((a, b) => a + (b.precio * b.qty), 0);
+            document.getElementById('modal-total').innerText = formatCLP(total);
+            document.getElementById('payment-modal').classList.remove('hidden');
+            // Reset UI modal
+            document.getElementById('payment-content').classList.remove('hidden');
+            document.getElementById('payment-loading').classList.add('hidden');
+            document.querySelectorAll('.payment-option').forEach(el => {
+                el.classList.remove('border-blue-500', 'bg-blue-900/20', 'ring-1', 'ring-blue-500');
+                el.querySelector('.check-circle').classList.add('hidden');
+            });
+            document.getElementById('btn-pay-now').disabled = true;
+            document.getElementById('btn-pay-now').classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            document.getElementById('btn-pay-now').classList.add('bg-slate-600', 'cursor-not-allowed', 'opacity-50');
+            selectedMethod = null;
+        }
+
+        function seleccionarMetodo(metodo) {
+            selectedMethod = metodo;
+            document.querySelectorAll('.payment-option').forEach(el => {
+                el.classList.remove('border-blue-500', 'bg-blue-900/20', 'ring-1', 'ring-blue-500');
+                el.querySelector('.check-circle').classList.add('hidden');
+            });
+            const active = document.getElementById(`method-${metodo}`);
+            active.classList.add('border-blue-500', 'bg-blue-900/20', 'ring-1', 'ring-blue-500');
+            active.querySelector('.check-circle').classList.remove('hidden');
+            active.querySelector('.check-circle').classList.add('flex');
+
+            const btn = document.getElementById('btn-pay-now');
+            btn.disabled = false;
+            btn.classList.remove('bg-slate-600', 'cursor-not-allowed', 'opacity-50');
+            btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+        }
+
+        function cerrarModalPago() {
+            document.getElementById('payment-modal').classList.add('hidden');
+        }
+
+        function procesarPago() {
+            if (!selectedMethod) return;
+            document.getElementById('payment-content').classList.add('hidden');
+            document.getElementById('payment-loading').classList.remove('hidden');
+            document.getElementById('payment-loading').classList.add('flex');
+
+            setTimeout(() => {
+                document.getElementById('payment-modal').classList.add('hidden');
+                document.getElementById('success-method').innerText = selectedMethod;
+                document.getElementById('success-screen').classList.remove('hidden');
+                document.getElementById('success-screen').classList.add('flex');
+                cart = [];
+                updateCartUI();
+            }, 2500);
+        }
+
+        function resetApp() {
+            document.getElementById('success-screen').classList.add('hidden');
+            document.getElementById('success-screen').classList.remove('flex');
+            navegar('home');
+        }
+
+        // --- INICIO ---
+        window.onload = () => navegar('home');
     });
 
     btnTop.addEventListener("click", () => {
