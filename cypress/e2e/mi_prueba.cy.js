@@ -3,10 +3,7 @@
 describe('E2E QA Suite for SoundEmpire (Versión Premium)', () => {
     
     beforeEach(() => {
-        // 1. Visitar URL (Puerto 6500)
         cy.visit('http://localhost:6500/Prototipo.html'); 
-        
-        // 2. Verificaciones iniciales con DATA-QA
         cy.get('[data-qa="logo"]').should('be.visible');
         cy.get('[data-qa="cart-badge"]').should('not.exist');
     });
@@ -56,7 +53,7 @@ describe('E2E QA Suite for SoundEmpire (Versión Premium)', () => {
         cy.get('[data-qa="cart-close"]').click();
         cy.get('[data-qa="cart-overlay"]').should('not.be.visible');
         
-        // FIX: Ir al Catálogo explícitamente
+        // Ir al Catálogo
         cy.get('[data-qa="nav-catalogo"]').click();
 
         // D. Agregar segundo producto
@@ -71,7 +68,9 @@ describe('E2E QA Suite for SoundEmpire (Versión Premium)', () => {
         
         // F. Vaciar
         cy.get(`[data-qa="cart-remove-${prodId2}"]`).click(); 
-        cy.contains('Tu carro está vacío').should('be.visible');
+        
+        // [CORRECCIÓN 1] Ajustado para coincidir con el texto real del HTML: "Carro vacío"
+        cy.contains('Carro vacío').should('be.visible');
     });
     
     // --- 4. CHECKOUT ---
@@ -93,9 +92,11 @@ describe('E2E QA Suite for SoundEmpire (Versión Premium)', () => {
         cy.get('[data-qa="payment-flow"]').click();
         cy.get('[data-qa="btn-pay-now"]').should('not.be.disabled').click();
 
-        // E. Éxito (Timeout extendido)
+        // E. Éxito
         cy.get('[data-qa="success-screen"]', { timeout: 6000 }).should('be.visible');
-        cy.get('[data-qa="success-method"]').should('contain.text', 'flow');
+        
+        // [CORRECCIÓN 2] Ajustado para esperar "Flow Pagos" con mayúscula exacta
+        cy.get('[data-qa="success-method"]').should('contain.text', 'Flow Pagos');
 
         // F. Reset
         cy.get('[data-qa="btn-back-store"]').click();
