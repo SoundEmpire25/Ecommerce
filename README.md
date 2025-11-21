@@ -84,3 +84,6 @@ Tech Writer / Documentación: Sebastián Ignacio Villegas González
 - Crear el README del proyecto e instrucciones de despliegue básicas.
 - Documentar decisiones de arquitectura, diseño, pruebas.
 - Al final del sprint entregar un resumen de lo que se hizo.
+
+QA REVISION MANUAL DE CODIGO
+
